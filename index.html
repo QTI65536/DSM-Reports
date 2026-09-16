@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QTI Capital · DSM Report Library</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>📋</text></svg>">
+<style>
+  :root {
+    --ink:    #17212b;
+    --sub:    #4a5660;
+    --muted:  #667482;
+    --line:   #dbe2e8;
+    --bg:     #eef2f5;
+    --card:   #ffffff;
+    --accent: #173b60;
+    --green:  #176b45;
+    --amber:  #986500;
+    --red:    #8b1a1a;
+    --radius: 4px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.55;
+    background: var(--bg);
+    color: var(--ink);
+    min-height: 100vh;
+  }
+
+  /* ── Header ── */
+  .site-header {
+    background: var(--accent);
+    padding: 0 32px;
+    border-bottom: 3px solid #0e2540;
+  }
+  .header-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 52px;
+  }
+  .wordmark { color: #fff; font-size: 16px; font-weight: bold; letter-spacing: -.2px; }
+  .wordmark span { font-weight: normal; opacity: .65; font-size: 13px; margin-left: 10px; }
+  .version-tag {
+    font-size: 11px;
+    font-weight: bold;
+    color: rgba(255,255,255,.55);
+    letter-spacing: .5px;
+    border: 1px solid rgba(255,255,255,.2);
+    padding: 3px 9px;
+    border-radius: 2px;
+  }
+
+  /* ── Main container ── */
+  .container {
+    max-width: 1100px;
+    margin: 28px auto;
+    padding: 0 24px 60px;
+  }
+
+  /* ── Intro ── */
+  .intro {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-top: 4px solid var(--accent);
+    padding: 24px 28px;
+    margin-bottom: 24px;
+  }
+  .intro h1 { font-size: 20px; color: var(--accent); margin-bottom: 8px; }
+  .intro p { color: var(--sub); font-size: 13.5px; max-width: 700px; }
+
+  /* ── Framework pills ── */
+  .gates {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 14px;
+  }
+  .gate {
+    font-size: 11.5px;
+    font-weight: bold;
+    padding: 3px 10px;
+    border: 1px solid var(--line);
+    background: #f2f5f7;
+    color: var(--sub);
+    border-radius: 2px;
+  }
+
+  /* ── Layout ── */
+  .layout {
+    display: grid;
+    grid-template-columns: 1fr 260px;
+    gap: 20px;
+    align-items: start;
+  }
+  @media (max-width: 720px) { .layout { grid-template-columns: 1fr; } }
+
+  /* ── Section heading ── */
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    border-bottom: 2px solid var(--line);
+    padding-bottom: 6px;
+    margin-bottom: 12px;
+  }
+  .section-head h2 {
+    font-size: 13px;
+    font-weight: bold;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: .6px;
+  }
+  .section-count {
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  /* ── Report table ── */
+  .report-block { margin-bottom: 28px; }
+  .report-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--card);
+    border: 1px solid var(--line);
+    font-size: 13.5px;
+  }
+  .report-table thead th {
+    background: #f2f5f7;
+    color: var(--sub);
+    font-size: 11.5px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: .4px;
+    padding: 8px 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--line);
+  }
+  .report-table thead th.right { text-align: right; }
+  .report-table tbody tr { border-bottom: 1px solid var(--line); }
+  .report-table tbody tr:last-child { border-bottom: none; }
+  .report-table tbody tr:hover { background: #f7f9fb; }
+  .report-table td { padding: 10px 12px; vertical-align: middle; }
+  .report-table td.right { text-align: right; color: var(--muted); font-size: 12.5px; }
+
+  .ticker-link {
+    font-weight: bold;
+    color: var(--accent);
+    text-decoration: none;
+    font-size: 14.5px;
+  }
+  .ticker-link:hover { text-decoration: underline; }
+  .company-name { color: var(--sub); font-size: 12.5px; margin-top: 1px; }
+
+  /* Verdict badge */
+  .verdict {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: bold;
+    padding: 2px 8px;
+    border-radius: 2px;
+    white-space: nowrap;
+  }
+  .v-buy    { background: #e6f4ee; color: var(--green); border: 1px solid #b2d8c4; }
+  .v-wait   { background: #fff8e6; color: var(--amber); border: 1px solid #e0c97a; }
+  .v-hold   { background: #eef2f5; color: var(--sub);   border: 1px solid var(--line); }
+  .v-avoid  { background: #fdf0f0; color: var(--red);   border: 1px solid #e8b4b4; }
+
+  .sector-tag {
+    font-size: 11.5px;
+    color: var(--muted);
+    background: #f2f5f7;
+    border: 1px solid var(--line);
+    padding: 2px 7px;
+    border-radius: 2px;
+  }
+  .safety-score { font-weight: bold; color: var(--accent); }
+
+  /* ── Sidebar ── */
+  .sidebar { display: flex; flex-direction: column; gap: 16px; }
+
+  .info-box {
+    background: var(--card);
+    border: 1px solid var(--line);
+    padding: 16px;
+  }
+  .info-box h3 {
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    color: var(--accent);
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 7px;
+    margin-bottom: 10px;
+  }
+  .info-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 0;
+    border-bottom: 1px solid #f0f3f5;
+    font-size: 12.5px;
+  }
+  .info-row:last-child { border-bottom: none; }
+  .info-label { color: var(--sub); }
+  .info-val { font-weight: bold; color: var(--ink); }
+
+  .gate-list { list-style: none; }
+  .gate-list li {
+    padding: 5px 0;
+    font-size: 12.5px;
+    color: var(--sub);
+    border-bottom: 1px solid #f0f3f5;
+    display: flex;
+    gap: 8px;
+  }
+  .gate-list li:last-child { border-bottom: none; }
+  .gate-num { font-weight: bold; color: var(--accent); min-width: 20px; }
+
+  .disc-box {
+    background: var(--card);
+    border: 1px solid var(--line);
+    padding: 14px;
+    font-size: 11.5px;
+    color: var(--muted);
+    font-style: italic;
+    line-height: 1.6;
+  }
+
+  /* ── Footer ── */
+  .site-footer {
+    border-top: 1px solid var(--line);
+    background: var(--card);
+    padding: 14px 32px;
+    text-align: center;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .site-footer a { color: var(--accent); text-decoration: none; }
+  .site-footer a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <div class="wordmark">QTI Capital <span>Hybrid Portfolio Architect · DSM Report Library</span></div>
+    <span class="version-tag">V4.2.5</span>
+  </div>
+</header>
+
+<div class="container">
+
+  <div class="intro">
+    <h1>DSM Stock &amp; ETF Analysis Reports</h1>
+    <p>Full-framework analysis using the Dual-Sleeve Model Hybrid Portfolio Architect. Each report runs through six mandatory gates — safety score, structural qualification, valuation, platform optionality, bull-case steel man, and strike-price calibration — before a terminal verdict is issued.</p>
+    <div class="gates">
+      <span class="gate">Gate 1 — Data Freshness</span>
+      <span class="gate">Gate 2 — Segment Completeness</span>
+      <span class="gate">Gate 3 — Platform Optionality</span>
+      <span class="gate">Gate 4 — Bull Case Steel Man</span>
+      <span class="gate">Gate 5 — Strike Price</span>
+      <span class="gate">Gate 6 — Tax</span>
+      <span class="gate">2033 Back-Calc</span>
+      <span class="gate">10-Year $10K Simulation</span>
+    </div>
+  </div>
+
+  <div class="layout">
+
+    <!-- Left: report table -->
+    <div class="left">
+      <div class="report-block">
+        <div class="section-head">
+          <h2>Reports</h2>
+          <span class="section-count">1 report · newest first</span>
+        </div>
+
+        <table class="report-table">
+          <thead>
+            <tr>
+              <th>Ticker / Company</th>
+              <th>Sector</th>
+              <th>Verdict</th>
+              <th class="right">Safety</th>
+              <th class="right">Reference Price</th>
+              <th class="right">Date</th>
+            </tr>
+          </thead>
+          <tbody>
+
+            <!-- ── Add new reports here, newest first ── -->
+            <tr>
+              <td>
+                <a class="ticker-link" href="reports/LHX/2026-09-15/">LHX</a>
+                <div class="company-name">L3Harris Technologies</div>
+              </td>
+              <td><span class="sector-tag">Industrial · A&amp;D</span></td>
+              <td><span class="verdict v-wait">WAIT FOR STRIKE</span></td>
+              <td class="right"><span class="safety-score">8.0</span></td>
+              <td class="right">$249.66</td>
+              <td class="right">Sep 15, 2026</td>
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Right: sidebar -->
+    <aside class="sidebar">
+
+      <div class="info-box">
+        <h3>Framework</h3>
+        <div class="info-row"><span class="info-label">Protocol</span><span class="info-val">V4.2.5</span></div>
+        <div class="info-row"><span class="info-label">Hurdle rate</span><span class="info-val">10% IRR / 2033</span></div>
+        <div class="info-row"><span class="info-label">Horizon</span><span class="info-val">7-year back-calc</span></div>
+        <div class="info-row"><span class="info-label">Simulation</span><span class="info-val">10-year · $10K</span></div>
+        <div class="info-row"><span class="info-label">Safety floor</span><span class="info-val">7.0 / 10</span></div>
+      </div>
+
+      <div class="info-box">
+        <h3>Verdict key</h3>
+        <div class="info-row">
+          <span class="verdict v-buy">BUY</span>
+          <span class="info-label" style="font-size:12px">Hurdle cleared, strike in range</span>
+        </div>
+        <div class="info-row">
+          <span class="verdict v-wait">WAIT</span>
+          <span class="info-label" style="font-size:12px">Quality pass, price not yet right</span>
+        </div>
+        <div class="info-row">
+          <span class="verdict v-hold">HOLD</span>
+          <span class="info-label" style="font-size:12px">Existing position, no new capital</span>
+        </div>
+        <div class="info-row" style="border:none">
+          <span class="verdict v-avoid">AVOID</span>
+          <span class="info-label" style="font-size:12px">Gate failure or structural concern</span>
+        </div>
+      </div>
+
+      <div class="info-box">
+        <h3>Mandatory gates</h3>
+        <ul class="gate-list">
+          <li><span class="gate-num">G1</span>Data freshness</li>
+          <li><span class="gate-num">G2</span>Segment completeness</li>
+          <li><span class="gate-num">G3</span>Platform optionality</li>
+          <li><span class="gate-num">G4</span>Bull case steel man</li>
+          <li><span class="gate-num">G5</span>Strike price calibration</li>
+          <li><span class="gate-num">G6</span>Tax assessment</li>
+        </ul>
+      </div>
+
+      <div class="disc-box">
+        For informational purposes only. Not investment advice. Past performance is no guarantee of future results. Always conduct your own due diligence before making investment decisions.
+      </div>
+
+    </aside>
+  </div>
+</div>
+
+<footer class="site-footer">
+  QTI Capital · DSM Report Library · Community resource ·
+  <a href="https://qti65536.github.io/CEF-Matrix-Chart/">CEF Matrix Chart</a>
+</footer>
+
+</body>
+</html>

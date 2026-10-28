@@ -1,0 +1,975 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>PAYX Investment Summary</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+
+<style>
+/*
+  Layout: Single-column report with a masthead rule and data-dense sections.
+  Design: Monochrome data-room aesthetic — the numbers are the visual. Slate
+  ground, amber signal color, mono for all figures. Keeps clear of cream+serif.
+*/
+
+/* ── Token system ── */
+:root {
+  --bg:          #f7f8fa;
+  --bg-card:     #ffffff;
+  --bg-code:     #eef0f4;
+  --fg:          #1c2030;
+  --fg-muted:    #5a6070;
+  --fg-label:    #8a8fa0;
+  --accent:      #b8761a;       /* amber — signal color */
+  --accent-dim:  #f0e0c0;
+  --green:       #1a7a45;
+  --green-dim:   #d4f0e0;
+  --red:         #b01c2e;
+  --red-dim:     #fde0e3;
+  --warn:        #7a5a10;
+  --warn-dim:    #f5e8c0;
+  --rule:        #d8dce8;
+  --mono:        'IBM Plex Mono', 'Courier New', monospace;
+  --sans:        'IBM Plex Sans', system-ui, sans-serif;
+  color-scheme:  light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg:         #0f1117;
+    --bg-card:    #181d2a;
+    --bg-code:    #1e2333;
+    --fg:         #e4e8f0;
+    --fg-muted:   #8898b8;
+    --fg-label:   #5a6882;
+    --accent:     #d4921a;
+    --accent-dim: #2a1e06;
+    --green:      #2aad60;
+    --green-dim:  #0d2818;
+    --red:        #e05060;
+    --red-dim:    #280a10;
+    --warn:       #c49020;
+    --warn-dim:   #261a04;
+    --rule:       #252b3a;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg:         #0f1117;
+  --bg-card:    #181d2a;
+  --bg-code:    #1e2333;
+  --fg:         #e4e8f0;
+  --fg-muted:   #8898b8;
+  --fg-label:   #5a6882;
+  --accent:     #d4921a;
+  --accent-dim: #2a1e06;
+  --green:      #2aad60;
+  --green-dim:  #0d2818;
+  --red:        #e05060;
+  --red-dim:    #280a10;
+  --warn:       #c49020;
+  --warn-dim:   #261a04;
+  --rule:       #252b3a;
+  color-scheme: dark;
+}
+
+/* ── Reset & base ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: var(--sans);
+  background: var(--bg);
+  color: var(--fg);
+  font-size: 14px;
+  line-height: 1.6;
+  padding-block: 0;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+
+/* ── Layout wrapper ── */
+.page {
+  max-width: 820px;
+  margin: 0 auto;
+  padding-block: 40px 64px;
+}
+
+/* ── Masthead ── */
+.masthead {
+  border-top: 3px solid var(--accent);
+  padding-top: 20px;
+  margin-bottom: 32px;
+}
+.masthead-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  align-items: baseline;
+  margin-bottom: 12px;
+}
+.ticker-badge {
+  font-family: var(--mono);
+  font-size: 28px;
+  font-weight: 500;
+  color: var(--accent);
+  letter-spacing: -0.5px;
+}
+.company-name {
+  font-size: 15px;
+  color: var(--fg-muted);
+  font-weight: 400;
+}
+.as-of {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--fg-label);
+  letter-spacing: 0.04em;
+  margin-left: auto;
+}
+.masthead-title {
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--fg);
+  text-wrap: balance;
+  line-height: 1.3;
+}
+.masthead-sub {
+  font-size: 13px;
+  color: var(--fg-muted);
+  margin-top: 6px;
+}
+
+/* ── Verdict banner ── */
+.verdict-banner {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  background: var(--bg-card);
+  border: 1px solid var(--rule);
+  border-left: 4px solid var(--green);
+  border-radius: 4px;
+  padding: 16px 20px;
+  margin-bottom: 32px;
+}
+.verdict-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--fg-label);
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 4px;
+}
+.verdict-text {
+  font-family: var(--mono);
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--green);
+}
+.verdict-sep {
+  width: 1px;
+  height: 36px;
+  background: var(--rule);
+  flex-shrink: 0;
+}
+.verdict-item { flex: 1; min-width: 140px; }
+.verdict-price {
+  font-family: var(--mono);
+  font-size: 22px;
+  font-weight: 500;
+  color: var(--fg);
+}
+.verdict-irr {
+  font-family: var(--mono);
+  font-size: 22px;
+  font-weight: 500;
+  color: var(--accent);
+}
+.irr-hurdle {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--green);
+  margin-left: 6px;
+}
+
+/* ── Section headers ── */
+.section {
+  margin-bottom: 32px;
+}
+.section-header {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  color: var(--fg-label);
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 6px;
+  margin-bottom: 16px;
+}
+
+/* ── Key metrics grid ── */
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 1px;
+  background: var(--rule);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.metric-cell {
+  background: var(--bg-card);
+  padding: 14px 16px;
+}
+.metric-label {
+  font-size: 11px;
+  color: var(--fg-label);
+  margin-bottom: 4px;
+  letter-spacing: 0.02em;
+}
+.metric-value {
+  font-family: var(--mono);
+  font-size: 17px;
+  font-weight: 500;
+  color: var(--fg);
+  font-variant-numeric: tabular-nums;
+}
+.metric-sub {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--fg-muted);
+  margin-top: 2px;
+}
+.metric-value.accent { color: var(--accent); }
+.metric-value.green  { color: var(--green); }
+.metric-value.muted  { color: var(--fg-muted); }
+
+/* ── IRR scenario row ── */
+.irr-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--rule);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.irr-cell {
+  background: var(--bg-card);
+  padding: 14px 16px;
+  text-align: center;
+}
+.irr-scenario {
+  font-size: 11px;
+  color: var(--fg-label);
+  margin-bottom: 6px;
+  letter-spacing: 0.03em;
+}
+.irr-pct {
+  font-family: var(--mono);
+  font-size: 24px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+.irr-pct.pass  { color: var(--green); }
+.irr-pct.warn  { color: var(--warn); }
+.irr-pct.fail  { color: var(--red); }
+.irr-detail {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--fg-muted);
+  margin-top: 4px;
+}
+.irr-hurdle-note {
+  font-size: 12px;
+  color: var(--fg-muted);
+  margin-top: 10px;
+  font-style: italic;
+}
+
+/* ── EPS table ── */
+.eps-track {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 0;
+  background: var(--rule);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  overflow-x: auto;
+}
+.eps-col {
+  flex: 1;
+  min-width: 72px;
+  background: var(--bg-card);
+  padding: 12px 14px;
+  border-right: 1px solid var(--rule);
+  text-align: center;
+}
+.eps-col:last-child { border-right: none; }
+.eps-fy {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--fg-label);
+  letter-spacing: 0.04em;
+  margin-bottom: 6px;
+}
+.eps-val {
+  font-family: var(--mono);
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--fg);
+  font-variant-numeric: tabular-nums;
+}
+.eps-val.est { color: var(--fg-muted); }
+.eps-type {
+  font-size: 10px;
+  color: var(--fg-label);
+  margin-top: 3px;
+}
+.eps-bar-wrap {
+  margin-top: 8px;
+  height: 4px;
+  background: var(--bg-code);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.eps-bar {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 2px;
+  transition: width 0.6s ease;
+}
+.eps-bar.est-bar { background: var(--rule); }
+
+/* ── Trigger checklist ── */
+.trigger-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.trigger-item {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  background: var(--bg-card);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  padding: 12px 14px;
+}
+.trigger-badge {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 500;
+  padding: 2px 8px;
+  border-radius: 2px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.badge-pass   { background: var(--green-dim); color: var(--green); }
+.badge-cpass  { background: var(--warn-dim);  color: var(--warn); }
+.badge-fail   { background: var(--red-dim);   color: var(--red); }
+.trigger-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--fg);
+  margin-bottom: 2px;
+}
+.trigger-detail {
+  font-size: 12px;
+  color: var(--fg-muted);
+}
+
+/* ── Argument blocks ── */
+.arg-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+@media (max-width: 600px) {
+  .arg-grid { grid-template-columns: 1fr; }
+}
+.arg-block {
+  background: var(--bg-card);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.arg-head {
+  padding: 10px 14px;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--rule);
+}
+.arg-head.bull { background: var(--green-dim); color: var(--green); }
+.arg-head.bear { background: var(--red-dim);   color: var(--red); }
+.arg-body {
+  padding: 14px;
+}
+.arg-point {
+  font-size: 13px;
+  color: var(--fg);
+  padding-left: 14px;
+  position: relative;
+  margin-bottom: 8px;
+  line-height: 1.5;
+}
+.arg-point:last-child { margin-bottom: 0; }
+.arg-point::before {
+  content: '–';
+  position: absolute;
+  left: 0;
+  color: var(--fg-label);
+}
+
+/* ── Strike zone ── */
+.strike-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--rule);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.strike-cell {
+  background: var(--bg-card);
+  padding: 14px 16px;
+}
+.strike-tier {
+  font-size: 11px;
+  color: var(--fg-label);
+  margin-bottom: 4px;
+  letter-spacing: 0.02em;
+}
+.strike-range {
+  font-family: var(--mono);
+  font-size: 18px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+.strike-range.mos    { color: var(--green); }
+.strike-range.add    { color: var(--accent); }
+.strike-range.hold   { color: var(--fg-muted); }
+.strike-range.avoid  { color: var(--red); }
+.strike-note {
+  font-size: 11px;
+  color: var(--fg-muted);
+  margin-top: 4px;
+}
+
+/* ── Adversarial analyst box ── */
+.aa-box {
+  background: var(--bg-code);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 4px 4px 0;
+  padding: 16px 18px;
+}
+.aa-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.aa-body {
+  font-size: 13px;
+  color: var(--fg);
+  line-height: 1.65;
+}
+.aa-body p { margin-bottom: 10px; }
+.aa-body p:last-child { margin-bottom: 0; }
+
+/* ── Safety score ── */
+.score-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+.score-label { font-size: 13px; color: var(--fg-muted); flex: 0 0 180px; }
+.score-bar-wrap {
+  flex: 1;
+  height: 6px;
+  background: var(--bg-code);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.score-bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  background: var(--accent);
+}
+.score-num {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--fg);
+  flex: 0 0 44px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── VL tier pair ── */
+.vl-pair {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 1px;
+  background: var(--rule);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.vl-cell {
+  background: var(--bg-card);
+  padding: 14px 16px;
+}
+.vl-metric { font-size: 12px; color: var(--fg-label); margin-bottom: 4px; }
+.vl-val {
+  font-family: var(--mono);
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--fg);
+}
+.vl-val.top { color: var(--green); }
+
+/* ── Footer ── */
+.report-footer {
+  border-top: 1px solid var(--rule);
+  padding-top: 20px;
+  margin-top: 40px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+.footer-note {
+  font-size: 11px;
+  color: var(--fg-label);
+  line-height: 1.6;
+  max-width: 540px;
+}
+.footer-version {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--fg-label);
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+/* ── Responsive tweaks ── */
+@media (max-width: 540px) {
+  .verdict-banner { flex-direction: column; gap: 8px; }
+  .verdict-sep { display: none; }
+  .irr-row { grid-template-columns: 1fr; }
+  .strike-grid { grid-template-columns: 1fr; }
+  .masthead-meta { gap: 6px 16px; }
+  .as-of { margin-left: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .eps-bar { transition: none; }
+}
+</style>
+
+<div class="page">
+
+  <!-- ── Masthead ── -->
+  <div class="masthead">
+    <div class="masthead-meta">
+      <span class="ticker-badge">PAYX</span>
+      <span class="company-name">Paychex, Inc.</span>
+      <span class="as-of">DSM Analysis · October 28, 2026</span>
+    </div>
+    <div class="masthead-title">Human Capital Management — Positioned for the AI-Augmented Decade</div>
+    <div class="masthead-sub">DSM Engine V4.2.4 · Data sourced from FastGraphs (Oct 27) and Value Line (Sept 25, 2026)</div>
+  </div>
+
+  <!-- ── Verdict banner ── -->
+  <div class="verdict-banner">
+    <div class="verdict-item">
+      <span class="verdict-label">Unified Verdict</span>
+      <span class="verdict-text">HOLD / ADD ON WEAKNESS · CORE</span>
+    </div>
+    <div class="verdict-sep"></div>
+    <div class="verdict-item">
+      <span class="verdict-label">Price (Oct 27)</span>
+      <span class="verdict-price">$109.26</span>
+    </div>
+    <div class="verdict-sep"></div>
+    <div class="verdict-item">
+      <span class="verdict-label">7-Year IRR (Base)</span>
+      <span class="verdict-irr">11.1% <span class="irr-hurdle">✓ CLEARS 10% HURDLE</span></span>
+    </div>
+  </div>
+
+  <!-- ── Key metrics ── -->
+  <div class="section">
+    <div class="section-header">Key Metrics</div>
+    <div class="metrics-grid">
+      <div class="metric-cell">
+        <div class="metric-label">Price / P/E</div>
+        <div class="metric-value">$109.26 / 19.2×</div>
+        <div class="metric-sub">FG Blended P/E</div>
+      </div>
+      <div class="metric-cell">
+        <div class="metric-label">Div Yield (current)</div>
+        <div class="metric-value accent">4.36%</div>
+        <div class="metric-sub">$4.76/sh annualized</div>
+      </div>
+      <div class="metric-cell">
+        <div class="metric-label">FG Score</div>
+        <div class="metric-value">74 / 100</div>
+        <div class="metric-sub">Oct 27, 2026</div>
+      </div>
+      <div class="metric-cell">
+        <div class="metric-label">FG Fair Value</div>
+        <div class="metric-value muted">$85.34</div>
+        <div class="metric-sub">15.0× Fair Value Ratio</div>
+      </div>
+      <div class="metric-cell">
+        <div class="metric-label">Normal P/E (FG)</div>
+        <div class="metric-value">27.25×</div>
+        <div class="metric-sub">Blended P/E 19.2× — 29% discount</div>
+      </div>
+      <div class="metric-cell">
+        <div class="metric-label">FY2027E EPS</div>
+        <div class="metric-value accent">$5.95</div>
+        <div class="metric-sub">FY2026 actual $5.51 (+10.6% YoY)</div>
+      </div>
+      <div class="metric-cell">
+        <div class="metric-label">EPS CAGR (8-yr)</div>
+        <div class="metric-value green">8.0%</div>
+        <div class="metric-sub">VL raised '29–'31E to $7.20</div>
+      </div>
+      <div class="metric-cell">
+        <div class="metric-label">Credit Rating</div>
+        <div class="metric-value">BBB+</div>
+        <div class="metric-sub">LT Debt/Cap 55.2%</div>
+      </div>
+      <div class="metric-cell">
+        <div class="metric-label">VL 18-Mo Target</div>
+        <div class="metric-value">~$111</div>
+        <div class="metric-sub">Midpoint Sept 25 VL report</div>
+      </div>
+      <div class="metric-cell">
+        <div class="metric-label">Market Cap</div>
+        <div class="metric-value">$38.9B</div>
+        <div class="metric-sub">~S&P 500 mid-large cap</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── EPS track ── -->
+  <div class="section">
+    <div class="section-header">EPS Trajectory (Fiscal Year May 31)</div>
+    <div class="eps-track">
+      <div class="eps-col">
+        <div class="eps-fy">FY2023</div>
+        <div class="eps-val">$4.27</div>
+        <div class="eps-type">Actual</div>
+        <div class="eps-bar-wrap"><div class="eps-bar" style="width:59%"></div></div>
+      </div>
+      <div class="eps-col">
+        <div class="eps-fy">FY2024</div>
+        <div class="eps-val">$4.72</div>
+        <div class="eps-type">Actual</div>
+        <div class="eps-bar-wrap"><div class="eps-bar" style="width:65%"></div></div>
+      </div>
+      <div class="eps-col">
+        <div class="eps-fy">FY2025</div>
+        <div class="eps-val">$4.98</div>
+        <div class="eps-type">Actual</div>
+        <div class="eps-bar-wrap"><div class="eps-bar" style="width:69%"></div></div>
+      </div>
+      <div class="eps-col">
+        <div class="eps-fy">FY2026</div>
+        <div class="eps-val">$5.51</div>
+        <div class="eps-type">Actual</div>
+        <div class="eps-bar-wrap"><div class="eps-bar" style="width:76%"></div></div>
+      </div>
+      <div class="eps-col">
+        <div class="eps-fy">FY2027E</div>
+        <div class="eps-val est">$5.95</div>
+        <div class="eps-type">Estimate</div>
+        <div class="eps-bar-wrap"><div class="eps-bar est-bar" style="width:82%"></div></div>
+      </div>
+      <div class="eps-col">
+        <div class="eps-fy">FY2028E</div>
+        <div class="eps-val est">$6.41</div>
+        <div class="eps-type">Estimate</div>
+        <div class="eps-bar-wrap"><div class="eps-bar est-bar" style="width:89%"></div></div>
+      </div>
+      <div class="eps-col">
+        <div class="eps-fy">FY2029E</div>
+        <div class="eps-val est">$6.85</div>
+        <div class="eps-type">Estimate</div>
+        <div class="eps-bar-wrap"><div class="eps-bar est-bar" style="width:95%"></div></div>
+      </div>
+      <div class="eps-col">
+        <div class="eps-fy">'29–'31E</div>
+        <div class="eps-val est">$7.20</div>
+        <div class="eps-type">VL Raised</div>
+        <div class="eps-bar-wrap"><div class="eps-bar est-bar" style="width:100%"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 7-Year IRR Scenarios ── -->
+  <div class="section">
+    <div class="section-header">7-Year IRR Scenarios — 2033 Back-Calc (from $109.26)</div>
+    <div class="irr-row">
+      <div class="irr-cell">
+        <div class="irr-scenario">Base Case</div>
+        <div class="irr-pct pass">11.1%</div>
+        <div class="irr-detail">$7.20 terminal EPS · 22× exit P/E</div>
+      </div>
+      <div class="irr-cell">
+        <div class="irr-scenario">Bull Case</div>
+        <div class="irr-pct pass">14–15%</div>
+        <div class="irr-detail">WISE monetization · PEO acceleration</div>
+      </div>
+      <div class="irr-cell">
+        <div class="irr-scenario">Bear Case</div>
+        <div class="irr-pct warn">7–8%</div>
+        <div class="irr-detail">Growth stalls 5% · multiple contraction</div>
+      </div>
+    </div>
+    <div class="irr-hurdle-note">10% hurdle rate — 7-year lock-up to 2033. Base case clears. Bear case is below hurdle but dividend income remains additive.</div>
+  </div>
+
+  <!-- ── Q1 FY2027 Trigger Checklist ── -->
+  <div class="section">
+    <div class="section-header">Q1 FY2027 Monitoring Checklist — Results (Sept 23, 2026)</div>
+    <div class="trigger-list">
+      <div class="trigger-item">
+        <span class="trigger-badge badge-pass">PASS</span>
+        <div>
+          <div class="trigger-name">PEO Revenue Growth ≥ 7%</div>
+          <div class="trigger-detail">Q1 PEO +12% YoY. Full-year guide raised to 7–8%. Record new business retention. Strongest signal in the set.</div>
+        </div>
+      </div>
+      <div class="trigger-item">
+        <span class="trigger-badge badge-pass">PASS</span>
+        <div>
+          <div class="trigger-name">WISE AI Platform — Measurable Milestones</div>
+          <div class="trigger-detail">2,000+ AI agents deployed. 50 trillion proprietary data points. 20% payroll processing reduction. WISE Hire launched. HR Tech Top Product 2026. 5× AI investment with only 1% expense growth. Named HR Tech Top Product 2026.</div>
+        </div>
+      </div>
+      <div class="trigger-item">
+        <span class="trigger-badge badge-pass">PASS</span>
+        <div>
+          <div class="trigger-name">Operating Leverage — Expense Discipline</div>
+          <div class="trigger-detail">5× AI investment absorbed with 1% total expense growth. Operating margin trajectory intact toward VL's 46.5% target for '29–'31. No margin deterioration from WISE build-out.</div>
+        </div>
+      </div>
+      <div class="trigger-item">
+        <span class="trigger-badge badge-pass">PASS</span>
+        <div>
+          <div class="trigger-name">VL Timeliness Upgrade</div>
+          <div class="trigger-detail">Upgraded to Timeliness 2 (Above Average) post-Q1 results. Combined with Safety 2 (top-quartile), this is Paychex's strongest VL rating combination in years. VL raised '29–'31 EPS from $7.00 to $7.20.</div>
+        </div>
+      </div>
+      <div class="trigger-item">
+        <span class="trigger-badge badge-cpass">COND. PASS</span>
+        <div>
+          <div class="trigger-name">Management Solutions Growth ≥ 5%</div>
+          <div class="trigger-detail">Q1 +4.3% — below 5–6% guidance. However: ASO-to-PEO conversions ran 2× management expectations. Converted clients move from Management Solutions to PEO revenue (3.5× revenue/client). This is mix shift, not churn. Net revenue outcome positive.</div>
+        </div>
+      </div>
+      <div class="trigger-item">
+        <span class="trigger-badge badge-pass">PASS</span>
+        <div>
+          <div class="trigger-name">Paycor Integration — No Integration Drag</div>
+          <div class="trigger-detail">No material integration expense reported. WISE Assistant deployment to Paycor customers confirmed in early stage. Retention risk from Paycor client overlap not visible in Q1 retention data.</div>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top: 10px; font-size: 12px; color: var(--fg-muted); font-style: italic;">
+      Summary: 5 full passes, 1 conditional pass (Management Solutions miss explained by ASO-to-PEO mix at 2× expectations — net positive). Zero fails.
+    </div>
+  </div>
+
+  <!-- ── WISE AI Platform ── -->
+  <div class="section">
+    <div class="section-header">WISE AI Platform — The Structural Thesis</div>
+    <div style="background: var(--bg-card); border: 1px solid var(--rule); border-radius: 4px; padding: 16px 18px;">
+      <p style="font-size: 13px; color: var(--fg); line-height: 1.7; margin-bottom: 12px;">
+        WISE (Workforce Intelligence and Staffing Engine) is Paychex's proprietary AI platform, built on 50 trillion data points accumulated across decades of payroll, HR, and compliance processing. As of Q1 FY2027, WISE runs 2,000+ AI agents internally, reducing payroll processing time by approximately 20%.
+      </p>
+      <div class="metrics-grid" style="margin-bottom: 12px;">
+        <div class="metric-cell">
+          <div class="metric-label">Proprietary Data Moat</div>
+          <div class="metric-value accent" style="font-size: 14px;">50 Trillion</div>
+          <div class="metric-sub">data points — decades of payroll records</div>
+        </div>
+        <div class="metric-cell">
+          <div class="metric-label">AI Agents Deployed</div>
+          <div class="metric-value green">2,000+</div>
+          <div class="metric-sub">Internal WISE platform as of Q1 FY2027</div>
+        </div>
+        <div class="metric-cell">
+          <div class="metric-label">Efficiency Gain</div>
+          <div class="metric-value">−20%</div>
+          <div class="metric-sub">Internal payroll processing time</div>
+        </div>
+        <div class="metric-cell">
+          <div class="metric-label">AI Investment vs. Expense</div>
+          <div class="metric-value accent">5× / +1%</div>
+          <div class="metric-sub">Investment up 5×; total expenses +1% only</div>
+        </div>
+      </div>
+      <p style="font-size: 12px; color: var(--fg-muted); line-height: 1.65;">
+        <strong style="color: var(--fg);">What's unconfirmed:</strong> Client-facing revenue attribution from WISE remains zero as of Q1 FY2027. The platform is in pilot across Paychex and Paycor clients. Revenue impact is the next catalyst to watch — Q2 FY2027 (December 2026 report) is the next data point. WISE Hire (agentic recruiting product) was launched during Q1 and is in early commercialization. The platform has proven internal ROI; external monetization is the bull thesis catalyst still pending.
+      </p>
+    </div>
+  </div>
+
+  <!-- ── Bull / Bear ── -->
+  <div class="section">
+    <div class="section-header">Bull vs. Bear — Structured Assessment</div>
+    <div class="arg-grid">
+      <div class="arg-block">
+        <div class="arg-head bull">Bull Case</div>
+        <div class="arg-body">
+          <div class="arg-point">WISE AI is a decade-long moat: 50T proprietary data points are non-replicable. Competitors lack this training base by definition.</div>
+          <div class="arg-point">PEO mix shift is net positive: PEO generates 3.5× revenue per client vs. ASO. The market misread the Management Solutions "miss" as churn — it was actually an upgrade.</div>
+          <div class="arg-point">VL raised '29–'31 EPS to $7.20 with 46.5% operating margin target. Structural margin expansion thesis intact post-WISE deployment.</div>
+          <div class="arg-point">4.36% dividend yield at current price is near-decade-high for Paychex. Dividend is 30-year-plus uninterrupted. Yield cushions the IRR even in bear scenarios.</div>
+          <div class="arg-point">Timeliness 2 + Safety 2 from VL is the strongest dual rating in Paychex's recent history. Institutional rerating catalyst possible as WISE monetizes.</div>
+        </div>
+      </div>
+      <div class="arg-block">
+        <div class="arg-head bear">Bear Case — Adversarial Engagement</div>
+        <div class="arg-body">
+          <div class="arg-point">WISE has delivered zero client-facing revenue. Internal efficiency gains don't move the stock — monetization does. Q2 FY2027 remains a show-me quarter.</div>
+          <div class="arg-point">At 19.2× P/E, PAYX prices in continued execution. A second sub-5% Management Solutions quarter would likely re-test $100, regardless of PEO explanation.</div>
+          <div class="arg-point">Paycor integration risk: 730,000+ mid-market clients with overlapping products introduce churn risk that won't appear in Q1 data but could emerge over 4–6 quarters.</div>
+          <div class="arg-point">FG Fair Value estimate of $85.34 reflects a mechanical 15× Fair Value Ratio — suggests meaningful premium-to-fair-value at $109. The premium requires WISE to monetize.</div>
+          <div class="arg-point">Interest income headwind: Paychex holds ~$4B in client funds. As the Fed cuts rates, this revenue line compresses. It has been a tailwind — it becomes a headwind.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Strike Zone ── -->
+  <div class="section">
+    <div class="section-header">Strike Zone — Entry Discipline</div>
+    <div class="strike-grid">
+      <div class="strike-cell">
+        <div class="strike-tier">Margin of Safety Zone</div>
+        <div class="strike-range mos">$95 – $100</div>
+        <div class="strike-note">Below $100 — IRR exceeds 13%. Conviction add. Dividend yield exceeds 4.75%.</div>
+      </div>
+      <div class="strike-cell">
+        <div class="strike-tier">Constructive Add Zone</div>
+        <div class="strike-range add">$100 – $110</div>
+        <div class="strike-note">Current price $109.26 — at upper boundary. IRR 11–12%. Add on any dip below $105.</div>
+      </div>
+      <div class="strike-cell">
+        <div class="strike-tier">Hold Zone (Current)</div>
+        <div class="strike-range hold">$110 – $120</div>
+        <div class="strike-note">No new capital. IRR 9–11%. Monitor triggers. Existing positions hold.</div>
+      </div>
+      <div class="strike-cell">
+        <div class="strike-tier">Avoid / Trim Zone</div>
+        <div class="strike-range avoid">$125+</div>
+        <div class="strike-note">Prior high $127.98. IRR falls below hurdle. Trim if WISE monetization not confirmed by FY2028.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Safety Score ── -->
+  <div class="section">
+    <div class="section-header">DSM Safety Score — 8.5 / 10</div>
+    <div class="score-row">
+      <div class="score-label">Financial Strength</div>
+      <div class="score-bar-wrap"><div class="score-bar-fill" style="width:90%"></div></div>
+      <div class="score-num">9.0</div>
+    </div>
+    <div class="score-row">
+      <div class="score-label">Dividend Stability</div>
+      <div class="score-bar-wrap"><div class="score-bar-fill" style="width:95%"></div></div>
+      <div class="score-num">9.5</div>
+    </div>
+    <div class="score-row">
+      <div class="score-label">Earnings Quality</div>
+      <div class="score-bar-wrap"><div class="score-bar-fill" style="width:80%"></div></div>
+      <div class="score-num">8.0</div>
+    </div>
+    <div class="score-row">
+      <div class="score-label">Balance Sheet</div>
+      <div class="score-bar-wrap"><div class="score-bar-fill" style="width:75%"></div></div>
+      <div class="score-num">7.5</div>
+    </div>
+    <div class="score-row">
+      <div class="score-label">Business Model Durability</div>
+      <div class="score-bar-wrap"><div class="score-bar-fill" style="width:85%"></div></div>
+      <div class="score-num">8.5</div>
+    </div>
+    <div style="margin-top: 10px; font-size: 12px; color: var(--fg-muted);">
+      Score ≥ 6.0 required for CORE classification. PAYX 8.5 is among the highest in the HCM peer set. 30+ year dividend history without interruption. BBB+ credit; negative free cash flow years are structural (client funds timing), not operational.
+    </div>
+  </div>
+
+  <!-- ── VL Ratings ── -->
+  <div class="section">
+    <div class="section-header">Value Line Ratings (Sept 25, 2026 — Post-Q1)</div>
+    <div class="vl-pair">
+      <div class="vl-cell">
+        <div class="vl-metric">Timeliness</div>
+        <div class="vl-val top">2 — Above Average</div>
+      </div>
+      <div class="vl-cell">
+        <div class="vl-metric">Safety</div>
+        <div class="vl-val top">2 — Top-Quartile</div>
+      </div>
+      <div class="vl-cell">
+        <div class="vl-metric">Financial Strength</div>
+        <div class="vl-val">A+</div>
+      </div>
+      <div class="vl-cell">
+        <div class="vl-metric">Earnings Predictability</div>
+        <div class="vl-val">100 / 100</div>
+      </div>
+      <div class="vl-cell">
+        <div class="vl-metric">Price Stability</div>
+        <div class="vl-val">90 / 100</div>
+      </div>
+      <div class="vl-cell">
+        <div class="vl-metric">18-Month Target (mid)</div>
+        <div class="vl-val">~$111</div>
+      </div>
+    </div>
+    <div style="margin-top: 10px; font-size: 12px; color: var(--fg-muted);">
+      Timeliness 2 upgrade post-Q1 FY2027 is notable. Timeliness and Safety both at 2 is among the best dual-rating combinations in VL's coverage universe. EPS Predictability at 100/100 — highest possible — reflects Paychex's extraordinary earnings consistency across economic cycles.
+    </div>
+  </div>
+
+  <!-- ── Adversarial Analyst ── -->
+  <div class="section">
+    <div class="section-header">Adversarial Analyst Final — The GAS</div>
+    <div class="aa-box">
+      <div class="aa-label">Adversarial Commentary · Hybrid Portfolio Architect V4.2.4</div>
+      <div class="aa-body">
+        <p>I'll concede the steel man on PEO. The Management Solutions "miss" that dropped PAYX 8–11% post-Q1 was a misread by the market — and I'll admit I'd have flagged it as a yellow light before knowing the ASO-to-PEO conversion rate ran 2× management expectations. When a client moves from ASO to PEO, revenue triples per client. The headline growth rate falls; the unit economics improve. That's not a problem. That's the business working correctly. Conceded.</p>
+        <p>What I won't concede: WISE still has zero client-facing revenue. Internal efficiency gains are a cost story, not a revenue story. The platform reduces headcount requirements and cuts processing time — that's real, but it doesn't command a higher P/E multiple unless it shows up in pricing power or client retention metrics. Q2 FY2027 is the next opportunity. Two more quarters of "internal only" and the bull thesis starts fraying at the edges.</p>
+        <p>The bear case that concerns me most isn't WISE delay — it's the interest rate headwind. Paychex holds roughly $4B in client funds between payroll runs. Rates at 5% were a $200M+ annual tailwind. Every 100bps cut costs them $40–50M in operating income. The Fed is easing. Watch the interest income line in Q2 — if it declines faster than WISE efficiency gains offset it, management is running to stand still.</p>
+        <p>At $109, the IRR math clears the 10% hurdle at 11.1%. That's a clean base case pass by a margin that earns a HOLD. It does not earn a conviction add unless the price retreats below $105 — then the yield exceeds 4.5%, the IRR pushes toward 12%, and the math becomes genuinely constructive. At $109.26, you are one bad quarter from the hold zone becoming a watch zone. Tread accordingly.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Footer ── -->
+  <div class="report-footer">
+    <div class="footer-note">
+      This report is for informational and discussion purposes only. It is not investment advice or a solicitation to buy or sell any security. All data sourced from FastGraphs (Oct 27, 2026), Value Line (Sept 25, 2026), and company reported results. Past performance is not indicative of future results. All IRR estimates are projections based on analyst consensus and model assumptions that may not be realized.
+    </div>
+    <div class="footer-version">DSM Engine V4.2.4 · Oct 28, 2026</div>
+  </div>
+
+</div>
+
+</body></html>

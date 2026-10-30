@@ -1,0 +1,1112 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>ABBV Investment Summary</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+
+<style>
+:root {
+  --bg:          #f7f8fa;
+  --bg-card:     #ffffff;
+  --bg-code:     #eef0f4;
+  --fg:          #1c2030;
+  --fg-muted:    #5a6070;
+  --fg-label:    #8a8fa0;
+  --accent:      #b8761a;
+  --accent-dim:  #f0e0c0;
+  --green:       #1a7a45;
+  --green-dim:   #d4f0e0;
+  --red:         #b01c2e;
+  --red-dim:     #fde0e3;
+  --warn:        #7a5a10;
+  --warn-dim:    #f5e8c0;
+  --rule:        #d8dce8;
+  --mono:        'IBM Plex Mono', 'Courier New', monospace;
+  --sans:        'IBM Plex Sans', system-ui, sans-serif;
+  color-scheme:  light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg:         #0f1117;
+    --bg-card:    #181d2a;
+    --bg-code:    #1e2333;
+    --fg:         #e4e8f0;
+    --fg-muted:   #8898b8;
+    --fg-label:   #5a6882;
+    --accent:     #d4921a;
+    --accent-dim: #2a1e06;
+    --green:      #2aad60;
+    --green-dim:  #0d2818;
+    --red:        #e05060;
+    --red-dim:    #280a10;
+    --warn:       #c49020;
+    --warn-dim:   #261a04;
+    --rule:       #252b3a;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg:         #0f1117;
+  --bg-card:    #181d2a;
+  --bg-code:    #1e2333;
+  --fg:         #e4e8f0;
+  --fg-muted:   #8898b8;
+  --fg-label:   #5a6882;
+  --accent:     #d4921a;
+  --accent-dim: #2a1e06;
+  --green:      #2aad60;
+  --green-dim:  #0d2818;
+  --red:        #e05060;
+  --red-dim:    #280a10;
+  --warn:       #c49020;
+  --warn-dim:   #261a04;
+  --rule:       #252b3a;
+  color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--sans);
+  background: var(--bg);
+  color: var(--fg);
+  font-size: 14px;
+  line-height: 1.6;
+  padding-left:  max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 32px;
+}
+
+.container { max-width: 860px; margin: 0 auto; }
+
+/* ── Masthead ── */
+.masthead {
+  border-bottom: 2px solid var(--accent);
+  padding-bottom: 16px;
+  margin-bottom: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.masthead-left {}
+.ticker {
+  font-family: var(--mono);
+  font-size: 32px;
+  font-weight: 500;
+  color: var(--accent);
+  letter-spacing: 0.04em;
+  line-height: 1;
+}
+.company-name {
+  font-size: 13px;
+  color: var(--fg-muted);
+  margin-top: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.masthead-right {
+  text-align: right;
+}
+.masthead-date {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--fg-label);
+}
+.masthead-engine {
+  font-size: 11px;
+  color: var(--fg-label);
+  margin-top: 2px;
+}
+
+/* ── Verdict banner ── */
+.verdict-banner {
+  background: var(--green-dim);
+  border: 1.5px solid var(--green);
+  border-radius: 4px;
+  padding: 14px 18px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.verdict-label {
+  font-family: var(--mono);
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--green);
+  letter-spacing: 0.04em;
+}
+.verdict-sub {
+  font-size: 12px;
+  color: var(--fg-muted);
+  margin-top: 2px;
+}
+.verdict-meta {
+  text-align: right;
+}
+.verdict-price {
+  font-family: var(--mono);
+  font-size: 22px;
+  font-weight: 500;
+  color: var(--fg);
+}
+.verdict-irr {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--green);
+  margin-top: 2px;
+}
+
+/* ── Section headers ── */
+.section-header {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--fg-label);
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 6px;
+  margin-bottom: 14px;
+  margin-top: 28px;
+}
+
+/* ── Key metrics grid ── */
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 10px;
+  margin-bottom: 6px;
+}
+.metric-cell {
+  background: var(--bg-card);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  padding: 10px 12px;
+}
+.metric-label {
+  font-size: 10px;
+  color: var(--fg-label);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 4px;
+}
+.metric-value {
+  font-family: var(--mono);
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--fg);
+}
+.metric-value.accent  { color: var(--accent); }
+.metric-value.green   { color: var(--green); }
+.metric-value.red     { color: var(--red); }
+.metric-value.warn    { color: var(--warn); }
+.metric-sub {
+  font-size: 10px;
+  color: var(--fg-muted);
+  margin-top: 2px;
+}
+
+/* ── EPS table ── */
+.eps-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--mono);
+  font-size: 12px;
+  margin-bottom: 4px;
+}
+.eps-table th {
+  font-family: var(--sans);
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--fg-label);
+  padding: 6px 10px;
+  text-align: right;
+  border-bottom: 1px solid var(--rule);
+  background: var(--bg-card);
+}
+.eps-table th:first-child { text-align: left; }
+.eps-table td {
+  padding: 7px 10px;
+  text-align: right;
+  border-bottom: 1px solid var(--rule);
+  color: var(--fg-muted);
+}
+.eps-table td:first-child { text-align: left; color: var(--fg-label); }
+.eps-table tr.actual td { color: var(--fg); }
+.eps-table tr.trough td { color: var(--red); }
+.eps-table tr.inflect td { color: var(--accent); font-weight: 500; }
+.eps-table tr.est td { color: var(--fg-muted); font-style: italic; }
+.eps-table .pos { color: var(--green); }
+.eps-table .neg { color: var(--red); }
+.eps-table .big { color: var(--accent); font-weight: 500; }
+
+/* ── IRR scenarios ── */
+.irr-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 4px;
+}
+.irr-card {
+  background: var(--bg-card);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  padding: 14px;
+}
+.irr-card.pass  { border-color: var(--green); background: var(--green-dim); }
+.irr-card.warn  { border-color: var(--warn);  background: var(--warn-dim); }
+.irr-label {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--fg-label);
+  margin-bottom: 8px;
+}
+.irr-card.pass .irr-label { color: var(--green); }
+.irr-card.warn .irr-label { color: var(--warn); }
+.irr-value {
+  font-family: var(--mono);
+  font-size: 26px;
+  font-weight: 500;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.irr-card.pass .irr-value { color: var(--green); }
+.irr-card.warn .irr-value { color: var(--warn); }
+.irr-badge {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 2px;
+  margin-bottom: 8px;
+}
+.irr-card.pass .irr-badge { background: var(--green); color: #fff; }
+.irr-card.warn .irr-badge { background: var(--warn); color: #fff; }
+.irr-assumptions {
+  font-size: 11px;
+  color: var(--fg-muted);
+  line-height: 1.5;
+}
+
+/* ── Product mix ── */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 8px;
+  margin-bottom: 4px;
+}
+.product-card {
+  background: var(--bg-card);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  padding: 10px 12px;
+}
+.product-name {
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--fg);
+  margin-bottom: 2px;
+}
+.product-share {
+  font-family: var(--mono);
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--accent);
+}
+.product-note {
+  font-size: 10px;
+  color: var(--fg-muted);
+  margin-top: 3px;
+}
+.product-bar {
+  height: 3px;
+  background: var(--rule);
+  border-radius: 2px;
+  margin-top: 6px;
+}
+.product-bar-fill {
+  height: 100%;
+  border-radius: 2px;
+  background: var(--accent);
+}
+.product-card.declining .product-share { color: var(--red); }
+.product-card.declining .product-bar-fill { background: var(--red); }
+.product-card.ramping .product-share { color: var(--green); }
+.product-card.ramping .product-bar-fill { background: var(--green); }
+
+/* ── Checklist ── */
+.checklist { display: flex; flex-direction: column; gap: 8px; }
+.check-item {
+  background: var(--bg-card);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  padding: 10px 14px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+.check-icon {
+  font-family: var(--mono);
+  font-size: 13px;
+  min-width: 18px;
+  margin-top: 1px;
+}
+.check-icon.pass  { color: var(--green); }
+.check-icon.warn  { color: var(--warn); }
+.check-icon.na    { color: var(--fg-label); }
+.check-body {}
+.check-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--fg);
+  margin-bottom: 2px;
+}
+.check-detail {
+  font-size: 11px;
+  color: var(--fg-muted);
+  line-height: 1.5;
+}
+
+/* ── Bull / Bear grid ── */
+.bb-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.bb-col {}
+.bb-header {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 6px 10px;
+  border-radius: 3px 3px 0 0;
+  margin-bottom: 0;
+}
+.bb-header.bull { background: var(--green-dim); color: var(--green); }
+.bb-header.bear { background: var(--red-dim);   color: var(--red); }
+.bb-list {
+  list-style: none;
+  border: 1px solid var(--rule);
+  border-top: none;
+  border-radius: 0 0 3px 3px;
+}
+.bb-list li {
+  padding: 8px 10px;
+  font-size: 12px;
+  color: var(--fg-muted);
+  border-bottom: 1px solid var(--rule);
+  line-height: 1.5;
+}
+.bb-list li:last-child { border-bottom: none; }
+.bb-list li strong { color: var(--fg); font-weight: 500; }
+
+/* ── Strike zone ── */
+.strike-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 8px;
+}
+.strike-card {
+  background: var(--bg-card);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  padding: 10px 12px;
+}
+.strike-card.mos    { border-color: var(--green); background: var(--green-dim); }
+.strike-card.add    { border-color: var(--accent); background: var(--accent-dim); }
+.strike-card.accum  { border-left: 3px solid var(--warn); }
+.strike-card.hold   { border-left: 3px solid var(--fg-label); }
+.strike-card.trim   { border-color: var(--red); background: var(--red-dim); }
+.strike-zone-label {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 4px;
+}
+.strike-card.mos   .strike-zone-label { color: var(--green); }
+.strike-card.add   .strike-zone-label { color: var(--accent); }
+.strike-card.accum .strike-zone-label { color: var(--warn); }
+.strike-card.hold  .strike-zone-label { color: var(--fg-label); }
+.strike-card.trim  .strike-zone-label { color: var(--red); }
+.strike-price {
+  font-family: var(--mono);
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--fg);
+  margin-bottom: 2px;
+}
+.strike-pe {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--fg-muted);
+}
+
+/* ── Safety score ── */
+.safety-grid { display: flex; flex-direction: column; gap: 6px; }
+.safety-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.safety-label {
+  font-size: 11px;
+  color: var(--fg-muted);
+  min-width: 160px;
+  flex-shrink: 0;
+}
+.safety-bar-bg {
+  flex: 1;
+  height: 6px;
+  background: var(--rule);
+  border-radius: 3px;
+  overflow: hidden;
+  min-width: 0;
+}
+.safety-bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  background: var(--green);
+}
+.safety-bar-fill.warn { background: var(--warn); }
+.safety-bar-fill.red  { background: var(--red); }
+.safety-score-val {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--fg-muted);
+  min-width: 32px;
+  text-align: right;
+}
+.safety-total {
+  margin-top: 10px;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+.safety-total-num {
+  font-family: var(--mono);
+  font-size: 28px;
+  font-weight: 500;
+  color: var(--green);
+}
+.safety-total-denom {
+  font-family: var(--mono);
+  font-size: 16px;
+  color: var(--fg-label);
+}
+.safety-total-label {
+  font-size: 12px;
+  color: var(--fg-muted);
+  margin-left: 4px;
+}
+
+/* ── VL ratings ── */
+.vl-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 8px;
+}
+.vl-cell {
+  background: var(--bg-card);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  padding: 10px 12px;
+}
+.vl-metric { font-size: 10px; color: var(--fg-label); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; }
+.vl-val    { font-family: var(--mono); font-size: 15px; font-weight: 500; color: var(--fg); }
+.vl-val.green { color: var(--green); }
+.vl-val.warn  { color: var(--warn); }
+.vl-val.red   { color: var(--red); }
+.vl-note { font-size: 10px; color: var(--fg-muted); margin-top: 2px; }
+
+/* ── Adversarial box ── */
+.adversarial {
+  background: var(--bg-code);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 4px 4px 0;
+  padding: 16px 18px;
+  margin-top: 4px;
+}
+.adversarial-header {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 12px;
+}
+.adversarial-item {
+  margin-bottom: 12px;
+}
+.adversarial-item:last-child { margin-bottom: 0; }
+.adversarial-point {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--fg);
+  margin-bottom: 3px;
+}
+.adversarial-text {
+  font-size: 12px;
+  color: var(--fg-muted);
+  line-height: 1.6;
+}
+.concede { color: var(--green); font-weight: 500; }
+.rebut   { color: var(--red);   font-weight: 500; }
+
+/* ── Footer ── */
+.footer {
+  margin-top: 40px;
+  padding-top: 16px;
+  border-top: 1px solid var(--rule);
+  font-size: 10px;
+  color: var(--fg-label);
+  line-height: 1.7;
+}
+.footer strong { color: var(--fg-muted); }
+
+/* ── Utilities ── */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  padding: 16px 18px;
+}
+.note {
+  font-size: 11px;
+  color: var(--fg-muted);
+  margin-top: 6px;
+  line-height: 1.5;
+}
+.mono { font-family: var(--mono); }
+
+@media (max-width: 560px) {
+  .irr-grid { grid-template-columns: 1fr; }
+  .bb-grid  { grid-template-columns: 1fr; }
+  .masthead { flex-direction: column; align-items: flex-start; }
+  .masthead-right { text-align: left; }
+  .verdict-banner { flex-direction: column; }
+  .verdict-meta { text-align: left; }
+}
+</style>
+
+<div class="container">
+
+  <!-- Masthead -->
+  <div class="masthead">
+    <div class="masthead-left">
+      <div class="ticker">ABBV</div>
+      <div class="company-name">AbbVie Inc. · NYSE · Biopharmaceutical</div>
+    </div>
+    <div class="masthead-right">
+      <div class="masthead-date">October 30, 2026</div>
+      <div class="masthead-engine">DSM Engine V4.2.4 · VL Sept 25, 2026</div>
+    </div>
+  </div>
+
+  <!-- Verdict banner -->
+  <div class="verdict-banner">
+    <div>
+      <div class="verdict-label">HOLD / ADD ON WEAKNESS · CORE</div>
+      <div class="verdict-sub">Healthcare — Large-Cap Biopharmaceutical · Humira cliff navigated · Post-trough re-acceleration confirmed</div>
+    </div>
+    <div class="verdict-meta">
+      <div class="verdict-price">$290.79</div>
+      <div class="verdict-irr">10.5% IRR (Base) · ✓ CLEARS 10% HURDLE</div>
+    </div>
+  </div>
+
+  <!-- Key metrics -->
+  <div class="section-header">Key Metrics</div>
+  <div class="metrics-grid">
+    <div class="metric-cell">
+      <div class="metric-label">Price (Oct 29)</div>
+      <div class="metric-value accent">$290.79</div>
+      <div class="metric-sub">+$4.80 (+1.68%)</div>
+    </div>
+    <div class="metric-cell">
+      <div class="metric-label">Blended P/E</div>
+      <div class="metric-value warn">21.98×</div>
+      <div class="metric-sub">FWD 2027E: 17.9×</div>
+    </div>
+    <div class="metric-cell">
+      <div class="metric-label">FY2026E EPS</div>
+      <div class="metric-value green">$13.90–$14.00</div>
+      <div class="metric-sub">+39–40% YoY growth</div>
+    </div>
+    <div class="metric-cell">
+      <div class="metric-label">FY2027E EPS</div>
+      <div class="metric-value">$16.22–$16.25</div>
+      <div class="metric-sub">VL & FG consensus</div>
+    </div>
+    <div class="metric-cell">
+      <div class="metric-label">Dividend (Ann.)</div>
+      <div class="metric-value">$6.92E</div>
+      <div class="metric-sub">FY2026E · Yield 2.38%</div>
+    </div>
+    <div class="metric-cell">
+      <div class="metric-label">Safety Score</div>
+      <div class="metric-value green">7.5/10</div>
+      <div class="metric-sub">Clears 6.0 floor</div>
+    </div>
+    <div class="metric-cell">
+      <div class="metric-label">FG Score</div>
+      <div class="metric-value warn">71/100</div>
+      <div class="metric-sub">FG Fair Value $198.39</div>
+    </div>
+    <div class="metric-cell">
+      <div class="metric-label">VL 18-Mo Target</div>
+      <div class="metric-value">$228–$438</div>
+      <div class="metric-sub">Midpoint $333 (+15%)</div>
+    </div>
+    <div class="metric-cell">
+      <div class="metric-label">LT Debt/Capital</div>
+      <div class="metric-value warn">97.48%</div>
+      <div class="metric-sub">FCF-covered; not Rot</div>
+    </div>
+    <div class="metric-cell">
+      <div class="metric-label">Market Cap</div>
+      <div class="metric-value">$513.86B</div>
+      <div class="metric-sub">TEV $579.15B</div>
+    </div>
+  </div>
+  <p class="note">⚠ FG Est. Annual ROR (-0.94%) disqualified as primary metric per DSM protocol — uses depressed Normal P/E 13.48× from post-cliff history. Back-Calc governs.</p>
+
+  <!-- Product Revenue Mix -->
+  <div class="section-header">Revenue Mix — FY2025 Product Portfolio</div>
+  <div class="product-grid">
+    <div class="product-card ramping">
+      <div class="product-name">Skyrizi</div>
+      <div class="product-share">29%</div>
+      <div class="product-note">IL-23 inhibitor · Immunology · Scaling fast</div>
+      <div class="product-bar"><div class="product-bar-fill" style="width:100%"></div></div>
+    </div>
+    <div class="product-card ramping">
+      <div class="product-name">Rinvoq</div>
+      <div class="product-share">14%</div>
+      <div class="product-note">JAK inhibitor · Multi-indication · High growth</div>
+      <div class="product-bar"><div class="product-bar-fill" style="width:48%"></div></div>
+    </div>
+    <div class="product-card">
+      <div class="product-name">Vraylar</div>
+      <div class="product-share">~8%E</div>
+      <div class="product-note">Neuroscience · 3rd pillar · MDD expansion</div>
+      <div class="product-bar"><div class="product-bar-fill" style="width:28%"></div></div>
+    </div>
+    <div class="product-card declining">
+      <div class="product-name">Humira</div>
+      <div class="product-share">7%</div>
+      <div class="product-note">Biosimilar erosion · Managed decline · Year 4</div>
+      <div class="product-bar"><div class="product-bar-fill" style="width:24%"></div></div>
+    </div>
+    <div class="product-card">
+      <div class="product-name">Botox Therapeutic</div>
+      <div class="product-share">6%</div>
+      <div class="product-note">Neurotoxin · Migraine · Stable</div>
+      <div class="product-bar"><div class="product-bar-fill" style="width:21%"></div></div>
+    </div>
+    <div class="product-card ramping">
+      <div class="product-name">Zumilokibart</div>
+      <div class="product-share">Pipeline</div>
+      <div class="product-note">Apogee acq. $10.9B · Eczema/asthma mAb · Phase 2–3</div>
+      <div class="product-bar"><div class="product-bar-fill" style="width:4%"></div></div>
+    </div>
+  </div>
+  <p class="note">Skyrizi + Rinvoq = 43% of FY2025 sales and accelerating. Humira is now a managed contraction (7%), not an existential risk. The cliff is behind us.</p>
+
+  <!-- EPS Trajectory -->
+  <div class="section-header">EPS Trajectory — The U-Shape Completed</div>
+  <div class="card">
+    <table class="eps-table">
+      <thead>
+        <tr>
+          <th>Year</th>
+          <th>EPS (Adj.)</th>
+          <th>YoY</th>
+          <th>Div</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="actual">
+          <td>FY2022</td><td>$13.77</td><td class="pos">+8%</td><td>$5.64</td><td>Pre-cliff peak</td>
+        </tr>
+        <tr class="trough">
+          <td>FY2023</td><td>$11.11</td><td class="neg">-19%</td><td>$5.92</td><td>Biosimilar impact</td>
+        </tr>
+        <tr class="trough">
+          <td>FY2024</td><td>$10.12</td><td class="neg">-9%</td><td>$6.20</td><td>Trough year</td>
+        </tr>
+        <tr class="trough">
+          <td>FY2025</td><td>$10.00</td><td class="neg">-1%</td><td>$6.56</td><td>Near-trough; inflection building</td>
+        </tr>
+        <tr class="inflect">
+          <td>FY2026E</td><td>$13.90–14.00</td><td class="big">+39–40%</td><td>$6.92E</td><td>Re-acceleration — new peak</td>
+        </tr>
+        <tr class="est">
+          <td>FY2027E</td><td>$16.22–16.25</td><td class="pos">+17%</td><td>$7.27E</td><td>VL & FG consensus</td>
+        </tr>
+        <tr class="est">
+          <td>FY2028E</td><td>$17.89</td><td class="pos">+10%</td><td>$7.60E</td><td>FG estimate</td>
+        </tr>
+        <tr class="est">
+          <td>FY2029–31E</td><td>VL: 11.5%/yr</td><td>—</td><td>6.5%/yr</td><td>VL long-term projection</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="note">The most important chart in the ABBV narrative: a U-shape that has fully completed. FY2026 marks the first year EPS surpasses the FY2022 pre-cliff level. Investors who endured the trough are now whole and then some.</p>
+
+  <!-- 7-Year IRR Scenarios -->
+  <div class="section-header">7-Year Back-Calc IRR Scenarios (2033 Terminal, $290.79 Entry)</div>
+  <div class="irr-grid">
+    <div class="irr-card pass">
+      <div class="irr-label">Base Case</div>
+      <div class="irr-value">10.5%</div>
+      <div class="irr-badge">✓ PASS</div>
+      <div class="irr-assumptions">
+        EPS CAGR: 11.5%<br>
+        FY2033 EPS: ~$29.41<br>
+        Terminal P/E: 18×<br>
+        Terminal Price: ~$529<br>
+        Cumulative Div: ~$62<br>
+        Total Return: ~103%
+      </div>
+    </div>
+    <div class="irr-card pass">
+      <div class="irr-label">Bull Case</div>
+      <div class="irr-value">13%</div>
+      <div class="irr-badge">✓ STRONG PASS</div>
+      <div class="irr-assumptions">
+        EPS CAGR: 12.5%<br>
+        FY2033 EPS: ~$31.26<br>
+        Terminal P/E: 20×<br>
+        Terminal Price: ~$625<br>
+        Cumulative Div: ~$65<br>
+        Total Return: ~137%
+      </div>
+    </div>
+    <div class="irr-card warn">
+      <div class="irr-label">Bear Case (MFN)</div>
+      <div class="irr-value">5.1%</div>
+      <div class="irr-badge">✗ MISS</div>
+      <div class="irr-assumptions">
+        EPS CAGR: 8.0%<br>
+        FY2033 EPS: ~$23.82<br>
+        Terminal P/E: 15×<br>
+        Terminal Price: ~$357<br>
+        Cumulative Div: ~$55<br>
+        MFN pricing headwind
+      </div>
+    </div>
+  </div>
+  <p class="note">Bear case requires both MFN pricing legislation AND multiple compression to 15× — a dual-hit scenario. Base clears the 10% hurdle by 50bps. The hurdle is passed; the margin of safety is thin.</p>
+
+  <!-- Pre-Verdict Checklist -->
+  <div class="section-header">Pre-Verdict Checklist</div>
+  <div class="checklist">
+    <div class="check-item">
+      <div class="check-icon pass">✓</div>
+      <div class="check-body">
+        <div class="check-title">Gate 1 — Data Freshness</div>
+        <div class="check-detail">VL report Sept 25, 2026 (post-Q2). FG Oct 29, 2026. FY2026E $14.00 confirmed. Note: Q3 FY2026 earnings due late October — may be just reported. No material revision assumed pending confirmation.</div>
+      </div>
+    </div>
+    <div class="check-item">
+      <div class="check-icon pass">✓</div>
+      <div class="check-body">
+        <div class="check-title">Gate 1e — Pending M&A</div>
+        <div class="check-detail">Apogee Therapeutics acquisition closed September 2026 — $10.9B all-cash. Zumilokibart (eczema/asthma mAb) as lead asset. No new pending acquisitions flagged. $0.14/share dilutive impact in FY2026 already reflected in $14.00 guidance.</div>
+      </div>
+    </div>
+    <div class="check-item">
+      <div class="check-icon pass">✓</div>
+      <div class="check-body">
+        <div class="check-title">Gate 2 — Structural Qualification</div>
+        <div class="check-detail">Multi-segment franchise confirmed: Immunology (Skyrizi 29%, Rinvoq 14%), Neuroscience (Vraylar), Aesthetics (Botox), Oncology (Imbruvica/Venclexta). Humira now 7% — managed contraction, not collapse. No single-product dependency remaining.</div>
+      </div>
+    </div>
+    <div class="check-item">
+      <div class="check-icon pass">✓</div>
+      <div class="check-body">
+        <div class="check-title">Gate 3 — Business Model Quality</div>
+        <div class="check-detail">Three moat sources confirmed: (1) biologics manufacturing complexity — large-molecule biosimilar lead time 10-12 years; (2) commercial infrastructure — 57,000 employees, global formulary positioning; (3) pipeline depth — four distinct verticals post-Apogee. Moat intact.</div>
+      </div>
+    </div>
+    <div class="check-item">
+      <div class="check-icon pass">✓</div>
+      <div class="check-body">
+        <div class="check-title">Gate 4 — Steel Man Written & Engaged</div>
+        <div class="check-detail">5-point Steel Man completed. Adversarial Analyst conceded 3/5 points (Humira cliff behind us; dividend safety; multi-sector diversification partially). Per Rule AA-2: 2+ concessions trigger working verdict review — verdict reviewed, confirmed HOLD/ADD ON WEAKNESS at current price above all add zones.</div>
+      </div>
+    </div>
+    <div class="check-item">
+      <div class="check-icon pass">✓</div>
+      <div class="check-body">
+        <div class="check-title">Gate 5 — Valuation Documented</div>
+        <div class="check-detail">$290.79 at 21.98× blended / 17.9× FY2027E forward. FG Fair Value $198.39 (15.0× FVR) — 46% premium. DSM fair range 18-20× forward → $292-$325 on FY2027E. Current price at lower bound of fair range. No SELL trigger. No screaming BUY.</div>
+      </div>
+    </div>
+    <div class="check-item">
+      <div class="check-icon na">—</div>
+      <div class="check-body">
+        <div class="check-title">Gate 6 — Tax Mechanics</div>
+        <div class="check-detail">Not triggered. Tax-sheltered account assumed. ABBV dividend qualifies as "qualified dividend" (ordinary C-corp structure, not BDC/MLP/REIT). No additional tax layer at fund level.</div>
+      </div>
+    </div>
+    <div class="check-item">
+      <div class="check-icon na">—</div>
+      <div class="check-body">
+        <div class="check-title">Gate 7 — CEF Protocol</div>
+        <div class="check-detail">Not applicable. Individual stock.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Adversarial Analyst -->
+  <div class="section-header">Adversarial Analyst — The GAS</div>
+  <div class="adversarial">
+    <div class="adversarial-header">⚡ Steel Man Engagement Complete — Rule AA-1 Compliance Confirmed</div>
+
+    <div class="adversarial-item">
+      <div class="adversarial-point">Steel Man #1 — Humira Cliff Behind Us</div>
+      <div class="adversarial-text"><span class="concede">PARTIALLY CONCEDED.</span> The cliff is navigated — that is not in dispute. But $290.79 is a stock that ran from $190 to $291 (+53%) while EPS went from $10.00 to $14.00E (+40%). Price and EPS growth are in lockstep. There's no multiple compression left as a margin of safety. You're buying the re-acceleration at full price.</div>
+    </div>
+
+    <div class="adversarial-item">
+      <div class="adversarial-point">Steel Man #2 — Skyrizi/Rinvoq Runway to 2029+</div>
+      <div class="adversarial-text"><span class="rebut">ENGAGED — MFN RISK IS REAL.</span> Skyrizi is on Medicare's negotiation target list. Even a 20% net pricing reduction on Skyrizi would erase $1.5–2B in annual revenue by 2028. VL's $16.25 FY2027E and 11.5% growth rate do NOT model MFN. This is bipartisan risk with legislative momentum — not a strawman. Rule AA-3 symmetry requirement discharged.</div>
+    </div>
+
+    <div class="adversarial-item">
+      <div class="adversarial-point">Steel Man #3 — Zumilokibart is a $10B+ Asset</div>
+      <div class="adversarial-text"><span class="rebut">CHALLENGED.</span> Dupixent (Sanofi/Regeneron) has 10 years of physician familiarity and dominant formulary positioning in atopic dermatitis. Second-mover entry into an established biologics category requires differentiated Phase 3 data that doesn't yet exist. AbbVie paid $10.9B for a mid-stage candidate. Dilutive before proven. Trial readout expected 2027 — binary event risk.</div>
+    </div>
+
+    <div class="adversarial-item">
+      <div class="adversarial-point">Steel Man #4 — Dividend Safety (FCF Cover)</div>
+      <div class="adversarial-text"><span class="concede">CONCEDED.</span> The math doesn't lie. ~$22B+ operating cash flow vs. ~$6.9B annual dividend payout = 3.2× FCF cover. The 97.48% Debt/Capital ratio is architectural reality post-Allergan, not Structural Rot. Dividend is safe. No challenge here.</div>
+    </div>
+
+    <div class="adversarial-item">
+      <div class="adversarial-point">Steel Man #5 — Multi-Sector Portfolio Reduces Risk</div>
+      <div class="adversarial-text"><span class="concede">PARTIALLY CONCEDED.</span> The concession ends at the immunology and neuroscience pillars. Aesthetics is the weak segment right now — VL explicitly notes sluggishness in aesthetics. Botox Cosmetic faces commoditized injectable competition (Dysport, Jeuveau, Restylane). Allergan was acquired at peak aesthetics pricing power. The "multiple pillars" argument partially rests on a pillar that's soft.</div>
+    </div>
+
+    <div class="adversarial-item">
+      <div class="adversarial-point">Rule AA-3 — Bear Case Weaknesses (Symmetry)</div>
+      <div class="adversarial-text">The bear case could fail if: (a) MFN legislation stalls in Senate reconciliation — political complexity is genuine; (b) Zumilokibart posts superior Phase 3 data vs. Dupixent — readout due 2027, would re-rate the Apogee acquisition immediately; (c) Aesthetics recovers as consumer spending stabilizes in 2027. None of these are slam dunks but all are real scenarios where the bear narrative collapses.</div>
+    </div>
+
+    <div class="adversarial-item">
+      <div class="adversarial-point">Rule AA-4 — No Single-Segment Collapse Test</div>
+      <div class="adversarial-text">Bear case integrity confirmed even excluding aesthetics entirely. MFN risk targets immunology (Skyrizi) — the core franchise, not the peripheral segment. Bear case holds across all segment permutations. ✓</div>
+    </div>
+
+    <div class="adversarial-item">
+      <div class="adversarial-point">GAS Final Verdict</div>
+      <div class="adversarial-text">3 concessions on 5 Steel Man points triggers verdict review per Rule AA-2. Verdict reviewed: HOLD/ADD ON WEAKNESS confirmed — not upgraded to BUY because the current price is above all defined add zones. MFN risk is the principal unpriced tail. The franchise is real, the cliff is behind us, and the IRR base case barely clears. Hold existing; deploy new capital only at the strike prices below.</div>
+    </div>
+  </div>
+
+  <!-- Bull / Bear -->
+  <div class="section-header">Bull vs. Bear — Decision Matrix</div>
+  <div class="bb-grid">
+    <div class="bb-col">
+      <div class="bb-header bull">BULL CASE</div>
+      <ul class="bb-list">
+        <li><strong>Humira cliff fully navigated.</strong> FY2026E at $14.00 — first year EPS surpasses FY2022 pre-cliff peak. Recovery complete; compounding restarts.</li>
+        <li><strong>Skyrizi + Rinvoq = 43% of sales and accelerating.</strong> Large-molecule biologics with 10-12 year biosimilar lead times. Next cliff is 2029–31 at earliest — and the asset base will look different by then.</li>
+        <li><strong>Vraylar = third franchise pillar.</strong> Neuroscience diversification beyond immunology reduces single-segment dependency. MDD/bipolar market large and underpenetrated.</li>
+        <li><strong>Zumilokibart (Apogee) — optionality on $12B+ atopic dermatitis market.</strong> Phase 3 readout 2027. Not in current valuation. Binary upside catalyst.</li>
+        <li><strong>Dividend 13+ consecutive years of raises.</strong> $6.92E FY2026, 6.5%/yr growth rate. FCF cover 3.2×. Income sleeve anchor quality.</li>
+        <li><strong>Institutional accumulation confirmed.</strong> To-Buy count 2001 in 2Q2026 vs. 1641 in 4Q2025. Smart money buying post-Apogee close.</li>
+      </ul>
+    </div>
+    <div class="bb-col">
+      <div class="bb-header bear">BEAR CASE</div>
+      <ul class="bb-list">
+        <li><strong>MFN drug pricing risk — bipartisan, unpriced.</strong> Skyrizi is a top Medicare Part D expenditure drug at ~$74K/year list price. Even a 20% net pricing reduction = $1.5–2B revenue impact. VL estimates do not model this.</li>
+        <li><strong>No margin of safety at $290.79.</strong> Stock has run +53% in 12 months in lockstep with earnings recovery. 21.98× blended P/E at top of DSM fair range. Price and EPS growth equal — no multiple expansion runway.</li>
+        <li><strong>Apogee dilutive before proven.</strong> $10.9B for a mid-stage candidate. $0.14/share FY2026 EPS drag. Dupixent is entrenched in target market with 10 years of physician loyalty. Second-mover entry is not guaranteed.</li>
+        <li><strong>Aesthetics is soft.</strong> VL narrative explicitly notes sluggishness. Botox Cosmetic faces commoditized injectable market and consumer trade-down risk. Allergan acquired at peak aesthetics cycle.</li>
+        <li><strong>97.48% Debt/Capital.</strong> Manageable given FCF but leaves no balance sheet flexibility for economic shock or rate spike. Interest expense a structural drag on GAAP earnings.</li>
+        <li><strong>VL Timeliness 4 (Below Average).</strong> Price has outrun near-term model. Not a structural flag, but a signal that near-term price momentum is less supported than fundamentals alone suggest.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Strike Zone -->
+  <div class="section-header">Strike Zone — Add on Weakness</div>
+  <div class="strike-grid">
+    <div class="strike-card mos">
+      <div class="strike-zone-label">🟢 Strong Add / MOS</div>
+      <div class="strike-price">$240–$255</div>
+      <div class="strike-pe">FY2027E: 14.8–15.7×</div>
+      <p class="note" style="margin-top:6px;font-size:10px">Approaching FG fair value $198.39. Maximum margin of safety. Ideal entry.</p>
+    </div>
+    <div class="strike-card add">
+      <div class="strike-zone-label">🟡 Add</div>
+      <div class="strike-price">$255–$270</div>
+      <div class="strike-pe">FY2027E: 15.7–16.6×</div>
+      <p class="note" style="margin-top:6px;font-size:10px">Below forward fair P/E. Constructive entry. New capital deployment zone.</p>
+    </div>
+    <div class="strike-card accum">
+      <div class="strike-zone-label">🟠 Accumulate Slowly</div>
+      <div class="strike-price">$270–$290</div>
+      <div class="strike-pe">FY2027E: 16.6–17.8×</div>
+      <p class="note" style="margin-top:6px;font-size:10px">Modestly below current. Reasonable small tranche deployment.</p>
+    </div>
+    <div class="strike-card hold">
+      <div class="strike-zone-label">⚪ Hold — Current</div>
+      <div class="strike-price">$290–$310</div>
+      <div class="strike-pe">FY2027E: 17.8–19.1×</div>
+      <p class="note" style="margin-top:6px;font-size:10px">Fairly valued. Hold existing position. No new capital at this level.</p>
+    </div>
+    <div class="strike-card trim">
+      <div class="strike-zone-label">🔴 Trim Consideration</div>
+      <div class="strike-price">$310+</div>
+      <div class="strike-pe">FY2027E: 19.1×+</div>
+      <p class="note" style="margin-top:6px;font-size:10px">Above DSM fair range. Reduce on strength, especially if MFN advances to Senate passage.</p>
+    </div>
+  </div>
+
+  <!-- Safety Score -->
+  <div class="section-header">Safety Score — Module 2</div>
+  <div style="display:grid;grid-template-columns:1fr auto;gap:20px;align-items:start">
+    <div class="safety-grid">
+      <div class="safety-row">
+        <span class="safety-label">Financial Strength (VL: A)</span>
+        <div class="safety-bar-bg"><div class="safety-bar-fill" style="width:100%"></div></div>
+        <span class="safety-score-val">+2.0</span>
+      </div>
+      <div class="safety-row">
+        <span class="safety-label">EPS Predictability (90/100)</span>
+        <div class="safety-bar-bg"><div class="safety-bar-fill" style="width:90%"></div></div>
+        <span class="safety-score-val">+1.5</span>
+      </div>
+      <div class="safety-row">
+        <span class="safety-label">Price Stability (90/100)</span>
+        <div class="safety-bar-bg"><div class="safety-bar-fill" style="width:90%"></div></div>
+        <span class="safety-score-val">+1.0</span>
+      </div>
+      <div class="safety-row">
+        <span class="safety-label">VL Safety Rating (2 — Above Avg)</span>
+        <div class="safety-bar-bg"><div class="safety-bar-fill" style="width:80%"></div></div>
+        <span class="safety-score-val">+1.5</span>
+      </div>
+      <div class="safety-row">
+        <span class="safety-label">Beta (0.65 — Defensive)</span>
+        <div class="safety-bar-bg"><div class="safety-bar-fill" style="width:85%"></div></div>
+        <span class="safety-score-val">+1.0</span>
+      </div>
+      <div class="safety-row">
+        <span class="safety-label">Dividend Consistency (13+ yr raises)</span>
+        <div class="safety-bar-bg"><div class="safety-bar-fill" style="width:100%"></div></div>
+        <span class="safety-score-val">+1.0</span>
+      </div>
+      <div class="safety-row">
+        <span class="safety-label">Debt/Capital (97.48% — Elevated)</span>
+        <div class="safety-bar-bg"><div class="safety-bar-fill red" style="width:60%"></div></div>
+        <span class="safety-score-val">-1.5</span>
+      </div>
+    </div>
+    <div>
+      <div class="safety-total">
+        <span class="safety-total-num">7.5</span>
+        <span class="safety-total-denom">/10</span>
+      </div>
+      <p class="note" style="font-size:10px;margin-top:4px">✓ Clears 6.0 floor<br>No Structural Rot flag<br>Debt is FCF-covered</p>
+    </div>
+  </div>
+
+  <!-- VL Ratings -->
+  <div class="section-header">Value Line Ratings — Sept 25, 2026</div>
+  <div class="vl-grid">
+    <div class="vl-cell">
+      <div class="vl-metric">Timeliness</div>
+      <div class="vl-val warn">4 — Below Avg</div>
+      <div class="vl-note">Lowered 8/21/26. Price outrun near-term model. Not a fundamental warning.</div>
+    </div>
+    <div class="vl-cell">
+      <div class="vl-metric">Safety</div>
+      <div class="vl-val green">2 — Above Avg</div>
+      <div class="vl-note">Lowered from 1 on 9/26/25. Still elite tier. Defensive characteristics intact.</div>
+    </div>
+    <div class="vl-cell">
+      <div class="vl-metric">Technical</div>
+      <div class="vl-val">3 — Average</div>
+      <div class="vl-note">Lowered 8/28/26.</div>
+    </div>
+    <div class="vl-cell">
+      <div class="vl-metric">Financial Strength</div>
+      <div class="vl-val green">A</div>
+      <div class="vl-note">Top-tier. FCF generation covers leverage.</div>
+    </div>
+    <div class="vl-cell">
+      <div class="vl-metric">EPS Predictability</div>
+      <div class="vl-val green">90/100</div>
+      <div class="vl-note">Near-perfect. Blue-chip reliability.</div>
+    </div>
+    <div class="vl-cell">
+      <div class="vl-metric">Price Stability</div>
+      <div class="vl-val green">90/100</div>
+      <div class="vl-note">Beta 0.65 — defensive portfolio anchor.</div>
+    </div>
+    <div class="vl-cell">
+      <div class="vl-metric">2029–31 Target</div>
+      <div class="vl-val">$270–$370</div>
+      <div class="vl-note">Midpoint $333. ~+15% from $290.79.</div>
+    </div>
+    <div class="vl-cell">
+      <div class="vl-metric">EPS Growth Rate Est.</div>
+      <div class="vl-val green">11.5%/yr</div>
+      <div class="vl-note">'23–25 to '29–31E. VL long-term projection.</div>
+    </div>
+    <div class="vl-cell">
+      <div class="vl-metric">S&amp;P Credit Rating</div>
+      <div class="vl-val green">A−</div>
+      <div class="vl-note">Investment grade. Consistent with A VL fin. strength.</div>
+    </div>
+  </div>
+
+  <!-- Unified Verdict -->
+  <div class="section-header">Unified Verdict</div>
+  <div class="card" style="border-left:3px solid var(--green);padding:18px 20px;">
+    <div style="font-family:var(--mono);font-size:14px;font-weight:500;color:var(--green);margin-bottom:10px;">
+      HOLD / ADD ON WEAKNESS — CORE · Healthcare Sleeve
+    </div>
+    <p style="font-size:13px;color:var(--fg-muted);line-height:1.7;margin-bottom:12px;">
+      <strong style="color:var(--fg)">ENGINE:</strong> Franchise quality confirmed. Humira cliff survived. Skyrizi + Rinvoq are building the second act. 7-year Back-Calc IRR 10.5% at current price — clearing the 10% hurdle by a thin margin. Bull case 13%, bear case (MFN) 5.1%.
+    </p>
+    <p style="font-size:13px;color:var(--fg-muted);line-height:1.7;margin-bottom:12px;">
+      <strong style="color:var(--fg)">FRICTION:</strong> Price has fully re-rated with the earnings recovery — no margin of safety left at $290.79. VL Timeliness 4 (below average near-term). Aesthetics soft. MFN drug pricing risk is bipartisan and real, not priced in. Apogee dilutive before Zumilokibart proves itself in Phase 3.
+    </p>
+    <p style="font-size:13px;color:var(--fg-muted);line-height:1.7;margin-bottom:16px;">
+      <strong style="color:var(--fg)">EXIT:</strong> No exit trigger present. Position remains CORE. Strike zone: $255–$270 is the constructive add zone (15.7–16.6× forward); $240–$255 is the MOS entry. Trim consideration above $310, and especially on any material MFN legislation advancing to Senate passage.
+    </p>
+    <div style="background:var(--bg-code);border-radius:4px;padding:14px;font-size:12px;color:var(--fg-muted);line-height:1.7;border-left:2px solid var(--accent);">
+      The Humira story had one of the best endings a pharmaceutical thriller can have — the sequel is already filming, the production budget is massive, and the reviews are strong. But you're now paying opening-weekend prices for a movie that critics already liked. The smart move: hold your seat, wait for the Tuesday matinee discount, and buy more if the market gives you one.
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <strong>DSM Engine V4.2.4</strong> · Hybrid Portfolio Architect · ABBV Analysis · October 30, 2026<br>
+    Price: $290.79 (Oct 29, 2026) · VL Report: September 25, 2026 · FG Data: October 29, 2026<br>
+    Analysis uses adjusted (operating) EPS per VL and FG convention. FG Est. Annual ROR (-0.94%) disqualified per DSM protocol — Back-Calc governs. Module 14 IRR scenarios are forward projections based on analyst consensus; actual returns will differ. MFN drug pricing scenario models a 20% net pricing reduction on Skyrizi — a risk scenario, not a base assumption.<br><br>
+    <strong>Not investment advice.</strong> For informational and analytical purposes only. All investment decisions carry risk. Past performance does not guarantee future results.
+  </div>
+
+</div>
+
+</body></html>

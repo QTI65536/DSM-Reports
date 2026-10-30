@@ -1,1 +1,792 @@
 
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>NVDA Investment Summary</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+
+<style>
+:root {
+  --bg:          #f7f8fa;
+  --bg-card:     #ffffff;
+  --bg-code:     #eef0f4;
+  --fg:          #1c2030;
+  --fg-muted:    #5a6070;
+  --fg-label:    #8a8fa0;
+  --accent:      #b8761a;
+  --accent-dim:  #f0e0c0;
+  --green:       #1a7a45;
+  --green-dim:   #d4f0e0;
+  --red:         #b01c2e;
+  --red-dim:     #fde0e3;
+  --warn:        #7a5a10;
+  --warn-dim:    #f5e8c0;
+  --rule:        #d8dce8;
+  --mono:        'IBM Plex Mono', 'Courier New', monospace;
+  --sans:        'IBM Plex Sans', system-ui, sans-serif;
+  color-scheme:  light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg:         #0f1117;
+    --bg-card:    #181d2a;
+    --bg-code:    #1e2333;
+    --fg:         #e4e8f0;
+    --fg-muted:   #8898b8;
+    --fg-label:   #5a6882;
+    --accent:     #d4921a;
+    --accent-dim: #2a1e06;
+    --green:      #2aad60;
+    --green-dim:  #0d2818;
+    --red:        #e05060;
+    --red-dim:    #280a10;
+    --warn:       #c49020;
+    --warn-dim:   #261a04;
+    --rule:       #252b3a;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg:         #0f1117;
+  --bg-card:    #181d2a;
+  --bg-code:    #1e2333;
+  --fg:         #e4e8f0;
+  --fg-muted:   #8898b8;
+  --fg-label:   #5a6882;
+  --accent:     #d4921a;
+  --accent-dim: #2a1e06;
+  --green:      #2aad60;
+  --green-dim:  #0d2818;
+  --red:        #e05060;
+  --red-dim:    #280a10;
+  --warn:       #c49020;
+  --warn-dim:   #261a04;
+  --rule:       #252b3a;
+  color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--sans);
+  background: var(--bg);
+  color: var(--fg);
+  font-size: 14px;
+  line-height: 1.6;
+  padding-left:  max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 32px;
+}
+
+.container { max-width: 860px; margin: 0 auto; }
+
+.masthead {
+  border-bottom: 2px solid var(--accent);
+  padding-bottom: 16px;
+  margin-bottom: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.ticker { font-family: var(--mono); font-size: 32px; font-weight: 500; color: var(--accent); letter-spacing: 0.04em; line-height: 1; }
+.company-name { font-size: 13px; color: var(--fg-muted); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.08em; }
+.masthead-right { text-align: right; }
+.masthead-date { font-family: var(--mono); font-size: 11px; color: var(--fg-label); }
+.masthead-engine { font-size: 11px; color: var(--fg-label); margin-top: 2px; }
+
+.verdict-banner {
+  background: var(--green-dim);
+  border: 1.5px solid var(--green);
+  border-radius: 4px;
+  padding: 14px 18px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.verdict-label { font-family: var(--mono); font-size: 18px; font-weight: 500; color: var(--green); letter-spacing: 0.04em; }
+.verdict-sub { font-size: 12px; color: var(--fg-muted); margin-top: 2px; }
+.verdict-meta { text-align: right; }
+.verdict-price { font-family: var(--mono); font-size: 22px; font-weight: 500; color: var(--fg); }
+.verdict-irr { font-family: var(--mono); font-size: 12px; color: var(--green); margin-top: 2px; }
+
+.section-header {
+  font-size: 10px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--fg-label); border-bottom: 1px solid var(--rule);
+  padding-bottom: 6px; margin-bottom: 14px; margin-top: 28px;
+}
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 10px; margin-bottom: 6px;
+}
+.metric-cell { background: var(--bg-card); border: 1px solid var(--rule); border-radius: 4px; padding: 10px 12px; }
+.metric-label { font-size: 10px; color: var(--fg-label); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; }
+.metric-value { font-family: var(--mono); font-size: 16px; font-weight: 500; color: var(--fg); }
+.metric-value.accent { color: var(--accent); }
+.metric-value.green  { color: var(--green); }
+.metric-value.red    { color: var(--red); }
+.metric-value.warn   { color: var(--warn); }
+.metric-sub { font-size: 10px; color: var(--fg-muted); margin-top: 2px; }
+
+/* Revenue mix — platform bars */
+.platform-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; margin-bottom: 6px; }
+.platform-card { background: var(--bg-card); border: 1px solid var(--rule); border-radius: 4px; padding: 10px 12px; }
+.platform-name { font-family: var(--mono); font-size: 13px; font-weight: 500; color: var(--fg); margin-bottom: 2px; }
+.platform-share { font-family: var(--mono); font-size: 18px; font-weight: 500; }
+.platform-note { font-size: 10px; color: var(--fg-muted); margin-top: 3px; }
+.platform-bar { height: 3px; background: var(--rule); border-radius: 2px; margin-top: 6px; }
+.platform-bar-fill { height: 100%; border-radius: 2px; }
+.platform-card.dominant .platform-share { color: var(--green); }
+.platform-card.dominant .platform-bar-fill { background: var(--green); }
+.platform-card.secondary .platform-share { color: var(--accent); }
+.platform-card.secondary .platform-bar-fill { background: var(--accent); }
+.platform-card.minor .platform-share { color: var(--fg-muted); }
+.platform-card.minor .platform-bar-fill { background: var(--fg-label); }
+
+.eps-table { width: 100%; border-collapse: collapse; font-family: var(--mono); font-size: 12px; margin-bottom: 4px; }
+.eps-table th { font-family: var(--sans); font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--fg-label); padding: 6px 10px; text-align: right; border-bottom: 1px solid var(--rule); background: var(--bg-card); }
+.eps-table th:first-child { text-align: left; }
+.eps-table td { padding: 7px 10px; text-align: right; border-bottom: 1px solid var(--rule); color: var(--fg-muted); }
+.eps-table td:first-child { text-align: left; color: var(--fg-label); }
+.eps-table tr.actual td { color: var(--fg); }
+.eps-table tr.inflect td { color: var(--green); font-weight: 500; }
+.eps-table tr.est td { color: var(--fg-muted); font-style: italic; }
+.eps-table .pos { color: var(--green); }
+.eps-table .big { color: var(--green); font-weight: 500; }
+
+.irr-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 4px; }
+.irr-card { background: var(--bg-card); border: 1px solid var(--rule); border-radius: 4px; padding: 14px; }
+.irr-card.pass { border-color: var(--green); background: var(--green-dim); }
+.irr-card.strong { border-color: var(--green); background: var(--green-dim); }
+.irr-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--fg-label); margin-bottom: 8px; }
+.irr-card.pass .irr-label { color: var(--green); }
+.irr-card.strong .irr-label { color: var(--green); }
+.irr-value { font-family: var(--mono); font-size: 26px; font-weight: 500; line-height: 1; margin-bottom: 6px; }
+.irr-card.pass .irr-value { color: var(--green); }
+.irr-card.strong .irr-value { color: var(--green); }
+.irr-badge { display: inline-block; font-family: var(--mono); font-size: 10px; padding: 2px 6px; border-radius: 2px; margin-bottom: 8px; }
+.irr-card.pass .irr-badge { background: var(--green); color: #fff; }
+.irr-card.strong .irr-badge { background: var(--green); color: #fff; }
+.irr-assumptions { font-size: 11px; color: var(--fg-muted); line-height: 1.5; }
+
+.checklist { display: flex; flex-direction: column; gap: 8px; }
+.check-item { background: var(--bg-card); border: 1px solid var(--rule); border-radius: 4px; padding: 10px 14px; display: flex; align-items: flex-start; gap: 12px; }
+.check-icon { font-family: var(--mono); font-size: 13px; min-width: 18px; margin-top: 1px; }
+.check-icon.pass { color: var(--green); }
+.check-icon.warn { color: var(--warn); }
+.check-icon.na   { color: var(--fg-label); }
+.check-title { font-size: 12px; font-weight: 600; color: var(--fg); margin-bottom: 2px; }
+.check-detail { font-size: 11px; color: var(--fg-muted); line-height: 1.5; }
+
+.bb-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.bb-header { font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 6px 10px; border-radius: 3px 3px 0 0; }
+.bb-header.bull { background: var(--green-dim); color: var(--green); }
+.bb-header.bear { background: var(--red-dim); color: var(--red); }
+.bb-list { list-style: none; border: 1px solid var(--rule); border-top: none; border-radius: 0 0 3px 3px; }
+.bb-list li { padding: 8px 10px; font-size: 12px; color: var(--fg-muted); border-bottom: 1px solid var(--rule); line-height: 1.5; }
+.bb-list li:last-child { border-bottom: none; }
+.bb-list li strong { color: var(--fg); font-weight: 500; }
+
+.strike-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; }
+.strike-card { background: var(--bg-card); border: 1px solid var(--rule); border-radius: 4px; padding: 10px 12px; }
+.strike-card.mos   { border-color: var(--green); background: var(--green-dim); }
+.strike-card.add   { border-color: var(--accent); background: var(--accent-dim); }
+.strike-card.accum { border-left: 3px solid var(--warn); }
+.strike-card.hold  { border-left: 3px solid var(--fg-label); }
+.strike-card.trim  { border-color: var(--red); background: var(--red-dim); }
+.strike-zone-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; }
+.strike-card.mos   .strike-zone-label { color: var(--green); }
+.strike-card.add   .strike-zone-label { color: var(--accent); }
+.strike-card.accum .strike-zone-label { color: var(--warn); }
+.strike-card.hold  .strike-zone-label { color: var(--fg-label); }
+.strike-card.trim  .strike-zone-label { color: var(--red); }
+.strike-price { font-family: var(--mono); font-size: 16px; font-weight: 500; color: var(--fg); margin-bottom: 2px; }
+.strike-pe { font-family: var(--mono); font-size: 10px; color: var(--fg-muted); }
+
+.safety-grid { display: flex; flex-direction: column; gap: 6px; }
+.safety-row { display: flex; align-items: center; gap: 10px; }
+.safety-label { font-size: 11px; color: var(--fg-muted); min-width: 180px; flex-shrink: 0; }
+.safety-bar-bg { flex: 1; height: 6px; background: var(--rule); border-radius: 3px; overflow: hidden; min-width: 0; }
+.safety-bar-fill { height: 100%; border-radius: 3px; background: var(--green); }
+.safety-bar-fill.warn { background: var(--warn); }
+.safety-bar-fill.red  { background: var(--red); }
+.safety-score-val { font-family: var(--mono); font-size: 11px; color: var(--fg-muted); min-width: 32px; text-align: right; }
+.safety-total { margin-top: 10px; display: flex; align-items: baseline; gap: 8px; }
+.safety-total-num { font-family: var(--mono); font-size: 28px; font-weight: 500; color: var(--green); }
+.safety-total-denom { font-family: var(--mono); font-size: 16px; color: var(--fg-label); }
+
+.vl-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 8px; }
+.vl-cell { background: var(--bg-card); border: 1px solid var(--rule); border-radius: 4px; padding: 10px 12px; }
+.vl-metric { font-size: 10px; color: var(--fg-label); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; }
+.vl-val { font-family: var(--mono); font-size: 15px; font-weight: 500; color: var(--fg); }
+.vl-val.green { color: var(--green); }
+.vl-val.warn  { color: var(--warn); }
+.vl-val.red   { color: var(--red); }
+.vl-note { font-size: 10px; color: var(--fg-muted); margin-top: 2px; }
+
+.adversarial { background: var(--bg-code); border-left: 3px solid var(--accent); border-radius: 0 4px 4px 0; padding: 16px 18px; margin-top: 4px; }
+.adversarial-header { font-size: 10px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; }
+.adversarial-item { margin-bottom: 12px; }
+.adversarial-item:last-child { margin-bottom: 0; }
+.adversarial-point { font-size: 11px; font-weight: 600; color: var(--fg); margin-bottom: 3px; }
+.adversarial-text { font-size: 12px; color: var(--fg-muted); line-height: 1.6; }
+.concede { color: var(--green); font-weight: 500; }
+.rebut   { color: var(--red);   font-weight: 500; }
+
+.footer { margin-top: 40px; padding-top: 16px; border-top: 1px solid var(--rule); font-size: 10px; color: var(--fg-label); line-height: 1.7; }
+.footer strong { color: var(--fg-muted); }
+
+.card { background: var(--bg-card); border: 1px solid var(--rule); border-radius: 4px; padding: 16px 18px; }
+.note { font-size: 11px; color: var(--fg-muted); margin-top: 6px; line-height: 1.5; }
+.mono { font-family: var(--mono); }
+
+/* Vertical Wall alert */
+.wall-alert {
+  background: var(--warn-dim);
+  border: 1.5px solid var(--warn);
+  border-radius: 4px;
+  padding: 12px 16px;
+  margin-bottom: 20px;
+  font-size: 12px;
+  color: var(--warn);
+  line-height: 1.6;
+}
+.wall-alert strong { color: var(--accent); }
+
+@media (max-width: 560px) {
+  .irr-grid { grid-template-columns: 1fr; }
+  .bb-grid  { grid-template-columns: 1fr; }
+  .masthead { flex-direction: column; align-items: flex-start; }
+  .masthead-right { text-align: left; }
+  .verdict-banner { flex-direction: column; }
+  .verdict-meta { text-align: left; }
+}
+</style>
+
+<div class="container">
+
+  <!-- Masthead -->
+  <div class="masthead">
+    <div class="masthead-left">
+      <div class="ticker">NVDA</div>
+      <div class="company-name">NVIDIA Corporation · NASDAQ · Semiconductors / AI Infrastructure</div>
+    </div>
+    <div class="masthead-right">
+      <div class="masthead-date">October 30, 2026</div>
+      <div class="masthead-engine">DSM Engine V4.2.4 · VL Sept 18, 2026 · FG Oct 29, 2026</div>
+    </div>
+  </div>
+
+  <!-- Vertical Wall Notice -->
+  <div class="wall-alert">
+    <strong>⚠ FOMO FILTER — VERTICAL WALL ACTIVE:</strong> NVDA price has appreciated ~400% over 3 years vs EPS CAGR ~82% over same period — price has outrun earnings even at extraordinary EPS growth rates. This is a <em>positive</em> Vertical Wall for existing holders (the business is genuinely exceptional), but signals elevated entry-timing risk for new capital above $200. The DSM does not interpret this as a SELL signal — it flags it as a deployment-pacing signal. Tranche into weakness; do not chase strength.
+  </div>
+
+  <!-- Verdict banner -->
+  <div class="verdict-banner">
+    <div>
+      <div class="verdict-label">BUY / TRANCHE ON WEAKNESS · SPECULATIVE-CORE</div>
+      <div class="verdict-sub">Semiconductors — AI Infrastructure · Dominant GPU monopoly · Blackwell ramp in progress · 7-year IRR crushes hurdle in all scenarios</div>
+    </div>
+    <div class="verdict-meta">
+      <div class="verdict-price">$213.66</div>
+      <div class="verdict-irr">~35% IRR (Base) · ~17% IRR (Bear) · ✓✓ CLEARS 10% HURDLE BY WIDE MARGIN</div>
+    </div>
+  </div>
+
+  <!-- Key metrics -->
+  <div class="section-header">Key Metrics</div>
+  <div class="metrics-grid">
+    <div class="metric-cell">
+      <div class="metric-label">Price (Oct 29)</div>
+      <div class="metric-value accent">$213.66</div>
+      <div class="metric-sub">-$1.72 (-0.80%)</div>
+    </div>
+    <div class="metric-cell">
+      <div class="metric-label">Blended P/E</div>
+      <div class="metric-value warn">26.37×</div>
+      <div class="metric-sub">FWD FY2027E: ~13.6×</div>
+    </div>
+    <div class="metric-cell">
+      <div class="metric-label">FY2026E EPS</div>
+      <div class="metric-value green">$9.30</div>
+      <div class="metric-sub">+95% YoY · VL est.</div>
+    </div>
+    <div class="metric-cell">
+      <div class="metric-label">FY2027E EPS</div>
+      <div class="metric-value green">$15.75</div>
+      <div class="metric-sub">+69% YoY · VL est.</div>
+    </div>
+    <div class="metric-cell">
+      <div class="metric-label">FG Score</div>
+      <div class="metric-value green">96/100</div>
+      <div class="metric-sub">FG Fair Value $437.99</div>
+    </div>
+    <div class="metric-cell">
+      <div class="metric-label">Safety Score</div>
+      <div class="metric-value green">7.0/10</div>
+      <div class="metric-sub">Clears 6.0 floor ✓</div>
+    </div>
+    <div class="metric-cell">
+      <div class="metric-label">Market Cap</div>
+      <div class="metric-value">$5.15T</div>
+      <div class="metric-sub">TEV $5.26T (FG)</div>
+    </div>
+    <div class="metric-cell">
+      <div class="metric-label">LT Debt/Capital</div>
+      <div class="metric-value green">5.45%</div>
+      <div class="metric-sub">Fortress balance sheet</div>
+    </div>
+    <div class="metric-cell">
+      <div class="metric-label">Cash (7/26/26)</div>
+      <div class="metric-value green">$99.4B</div>
+      <div class="metric-sub">Net cash position</div>
+    </div>
+    <div class="metric-cell">
+      <div class="metric-label">Operating Margin</div>
+      <div class="metric-value green">66%</div>
+      <div class="metric-sub">FY2026E · expanding</div>
+    </div>
+    <div class="metric-cell">
+      <div class="metric-label">Net Profit Margin</div>
+      <div class="metric-value green">55%</div>
+      <div class="metric-sub">FY2026E · 54.8% FY2027E</div>
+    </div>
+    <div class="metric-cell">
+      <div class="metric-label">VL 18-Mo Target</div>
+      <div class="metric-value">$197–$398</div>
+      <div class="metric-sub">Midpoint $298 (+40%)</div>
+    </div>
+  </div>
+  <p class="note">⚠ FG Est. Annual ROR (111.85%) disqualified as primary metric per DSM protocol — uses speculative Normal P/E of 48.69× built on extraordinary recent EPS growth rates. At $5.15T market cap with 35%+ EPS CAGR, Normal P/E normalization has no historical precedent. Back-Calc governs.</p>
+
+  <!-- Revenue Mix -->
+  <div class="section-header">Revenue Mix — FY2025 Market Platforms</div>
+  <div class="platform-grid">
+    <div class="platform-card dominant">
+      <div class="platform-name">Data Center</div>
+      <div class="platform-share">90%</div>
+      <div class="platform-note">H100/H200/Blackwell · Hyperscalers · AI labs · Sovereign AI</div>
+      <div class="platform-bar"><div class="platform-bar-fill" style="width:100%"></div></div>
+    </div>
+    <div class="platform-card secondary">
+      <div class="platform-name">Gaming</div>
+      <div class="platform-share">7%</div>
+      <div class="platform-note">GeForce GPUs · RTX · Consumer · Legacy franchise</div>
+      <div class="platform-bar"><div class="platform-bar-fill" style="width:7.8%"></div></div>
+    </div>
+    <div class="platform-card minor">
+      <div class="platform-name">Pro Visualization</div>
+      <div class="platform-share">2%</div>
+      <div class="platform-note">Quadro/RTX · Workstation · Design · CGI</div>
+      <div class="platform-bar"><div class="platform-bar-fill" style="width:2.2%"></div></div>
+    </div>
+    <div class="platform-card minor">
+      <div class="platform-name">Automotive</div>
+      <div class="platform-share">1%</div>
+      <div class="platform-note">DRIVE platform · AV inference · Growing fast from small base</div>
+      <div class="platform-bar"><div class="platform-bar-fill" style="width:1.1%"></div></div>
+    </div>
+  </div>
+  <p class="note">90% data center concentration is the defining structural fact of modern NVDA. This is not a semiconductor company that happens to do AI — it IS the AI infrastructure company. Gaming (the legacy identity) is now a rounding error on the income statement.</p>
+
+  <!-- EPS Trajectory -->
+  <div class="section-header">EPS Trajectory — The Vertical Ascent</div>
+  <div class="card">
+    <table class="eps-table">
+      <thead>
+        <tr>
+          <th>Year (Jan FYE)</th>
+          <th>EPS (Adj.)</th>
+          <th>YoY</th>
+          <th>Revenue ($B)</th>
+          <th>Op. Margin</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="actual">
+          <td>FY2023</td><td>$1.30</td><td class="pos">+293%</td><td>$26.9</td><td>41.7%</td><td>AI ignition</td>
+        </tr>
+        <tr class="actual">
+          <td>FY2024</td><td>$2.99</td><td class="big">+130%</td><td>$60.9</td><td>62.5%</td><td>Hopper ramp</td>
+        </tr>
+        <tr class="actual">
+          <td>FY2025</td><td>$4.77</td><td class="big">+60%</td><td>$130.5</td><td>64.7%</td><td>H100/H200 peak</td>
+        </tr>
+        <tr class="inflect">
+          <td>FY2026E</td><td>$9.30</td><td class="big">+95%</td><td>$215.9E→$407.5E</td><td>66.0%E</td><td>Blackwell ramp · re-acceleration</td>
+        </tr>
+        <tr class="est">
+          <td>FY2027E</td><td>$15.75</td><td class="pos">+69%</td><td>$687.5E</td><td>66.5%E</td><td>VL est. · +70% revenue guide</td>
+        </tr>
+        <tr class="est">
+          <td>FY2028E (FG)</td><td>$15.83E</td><td class="pos">+1%</td><td>—</td><td>—</td><td>FG consensus · deceleration begins</td>
+        </tr>
+        <tr class="est">
+          <td>FY2029E (FG)</td><td>$21.51E</td><td class="pos">+36%</td><td>—</td><td>—</td><td>FG consensus · re-acceleration</td>
+        </tr>
+        <tr class="est">
+          <td>'29–'31E (VL)</td><td>35.5%/yr CAGR</td><td>—</td><td>$785B E</td><td>63.5%E</td><td>VL long-term projection</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="note">Note: VL fiscal year begins Feb 1. FY2026 (ends Jan 2027) = the current fiscal year. The $96.2B July quarter just reported represents a single quarter approaching the entire FY2023 annual revenue of $60.9B. This is not normal EPS trajectory — it is a category-defining monopoly extraction event.</p>
+
+  <!-- 7-Year IRR Scenarios -->
+  <div class="section-header">7-Year Back-Calc IRR Scenarios (2033 Terminal, $213.66 Entry)</div>
+  <div class="irr-grid">
+    <div class="irr-card strong">
+      <div class="irr-label">Base Case</div>
+      <div class="irr-value">~35%</div>
+      <div class="irr-badge">✓✓ STRONG PASS</div>
+      <div class="irr-assumptions">
+        EPS CAGR: 35.5% (VL)<br>
+        FY2033 EPS: ~$67<br>
+        Terminal P/E: 25×<br>
+        Terminal Price: ~$1,675<br>
+        Cumul. Div: ~$8<br>
+        Total Return: ~690%
+      </div>
+    </div>
+    <div class="irr-card strong">
+      <div class="irr-label">Bull Case</div>
+      <div class="irr-value">~48%</div>
+      <div class="irr-badge">✓✓ EXCEPTIONAL</div>
+      <div class="irr-assumptions">
+        EPS CAGR: 40%<br>
+        FY2033 EPS: ~$85<br>
+        Terminal P/E: 28×<br>
+        Terminal Price: ~$2,380<br>
+        Cumul. Div: ~$10<br>
+        Total Return: ~1,020%
+      </div>
+    </div>
+    <div class="irr-card pass">
+      <div class="irr-label">Bear Case</div>
+      <div class="irr-value">~17%</div>
+      <div class="irr-badge">✓ PASS</div>
+      <div class="irr-assumptions">
+        EPS CAGR: 20% (slowdown)<br>
+        FY2033 EPS: ~$35<br>
+        Terminal P/E: 18×<br>
+        Terminal Price: ~$630<br>
+        Cumul. Div: ~$6<br>
+        Total Return: ~200%
+      </div>
+    </div>
+  </div>
+  <p class="note">This is the most favorable IRR Back-Calc in the DSM engine. The hurdle clears in <em>every scenario</em> — bear case at 17%, base at 35%, bull at 48%. The only scenario that misses the 10% hurdle requires both a catastrophic EPS growth collapse to single digits AND severe multiple compression simultaneously — a dual-hit scenario that would require a fundamental disruption of the AI infrastructure buildout thesis. The Back-Calc is not close; it is conclusive.</p>
+
+  <!-- Pre-Verdict Checklist -->
+  <div class="section-header">Pre-Verdict Checklist</div>
+  <div class="checklist">
+    <div class="check-item">
+      <div class="check-icon pass">✓</div>
+      <div class="check-body">
+        <div class="check-title">Gate 1 — Data Freshness</div>
+        <div class="check-detail">VL Sept 18, 2026 (post July-quarter Q2 FY2027 results). FG Oct 29, 2026. VL EPS guidance reflects July-quarter actual $2.22/sh and Oct-quarter guidance of $2.47/sh. FY2026 on track for $9.30. Next earnings report: November 17, 2026. No pending M&A flagged. Blackwell ramp and Q3 guidance of $108B already incorporated into VL FY2027E $15.75.</div>
+      </div>
+    </div>
+    <div class="check-item">
+      <div class="check-icon pass">✓</div>
+      <div class="check-body">
+        <div class="check-title">Gate 1e — Pending M&A / Material Events</div>
+        <div class="check-detail">No pending acquisitions. VL notes NVIDIA is pursuing strategies to support frontier AI labs (financing structures under scrutiny). Blackwell supply chain constraints noted — demand exceeds supply, a positive constraint. International sales 31% of revenue; no export control escalation material to current FY guidance flagged. 15th consecutive quarter of sequential revenue growth confirmed.</div>
+      </div>
+    </div>
+    <div class="check-item">
+      <div class="check-icon pass">✓</div>
+      <div class="check-body">
+        <div class="check-title">Gate 2 — Structural Qualification</div>
+        <div class="check-detail">Platform moat confirmed across four vectors: (1) CUDA software ecosystem lock-in — 10+ year developer investment, not replicable by AMD or Intel in a product cycle; (2) Data center TAM expansion — hyperscalers (Meta, MSFT, Google, Amazon) + sovereign AI + frontier AI labs = diversified customer base; (3) NVLink/InfiniBand networking — GPU clusters require NVDA's own networking fabric; (4) Automotive DRIVE — nascent but real optionality. No single-customer concentration (no customer >10% of revenue disclosed). Rule AA-5 clear.</div>
+      </div>
+    </div>
+    <div class="check-item">
+      <div class="check-icon pass">✓</div>
+      <div class="check-body">
+        <div class="check-title">Gate 3 — Business Model Quality</div>
+        <div class="check-detail">Asset-light fabless model confirmed — TSMC manufactures; NVDA designs and captures the margin. 55% net profit margin on $130B+ revenue is historically unprecedented for a hardware company. Return on Equity 79.5% FY2026E. Capital allocation: buybacks ($99.4B cash war chest), growing dividend (special $0.50 paid), and R&D at 6% of sales. Business model quality: elite tier.</div>
+      </div>
+    </div>
+    <div class="check-item">
+      <div class="check-icon pass">✓</div>
+      <div class="check-body">
+        <div class="check-title">Gate 4 — Steel Man Written & Engaged</div>
+        <div class="check-detail">5-point Steel Man completed. Adversarial Analyst conceded 3/5 points (CUDA moat durability; hyperscaler capex cycle strength; supply-constrained demand). Per Rule AA-2: verdict confirmed BUY. See Adversarial Analyst section.</div>
+      </div>
+    </div>
+    <div class="check-item">
+      <div class="check-icon pass">✓</div>
+      <div class="check-body">
+        <div class="check-title">Gate 5 — Valuation Documented</div>
+        <div class="check-detail">$213.66 at 26.37× blended P/E. At FY2027E $15.75, forward P/E = 13.6× — an extraordinary valuation for a company with 35%+ EPS CAGR. FG Fair Value $437.99 implies 51% upside at current price. VL 18-month midpoint $298 (+40%). The market is pricing NVDA at a meaningful discount to consensus fair value at the current price after the recent pullback from $243 highs. Entry is in the constructive zone by every metric that discounts the future.</div>
+      </div>
+    </div>
+    <div class="check-item">
+      <div class="check-icon na">—</div>
+      <div class="check-body">
+        <div class="check-title">Gate 6 — Tax Mechanics</div>
+        <div class="check-detail">Not triggered. IRA account — tax-sheltered. NVDA is an ordinary C-corp; no special tax layer at fund level. Dividend is qualified. No additional Gate 6 analysis required.</div>
+      </div>
+    </div>
+    <div class="check-item">
+      <div class="check-icon na">—</div>
+      <div class="check-body">
+        <div class="check-title">Gate 7 — CEF Protocol</div>
+        <div class="check-detail">Not applicable. Individual semiconductor stock.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Adversarial Analyst -->
+  <div class="section-header">Adversarial Analyst — The GAS</div>
+  <div class="adversarial">
+    <div class="adversarial-header">⚡ Steel Man Engagement Complete — Rule AA-1 · 3/5 Concessions → BUY Confirmed</div>
+
+    <div class="adversarial-item">
+      <div class="adversarial-point">Steel Man #1 — CUDA Moat Is a 10-Year Compounding Asset</div>
+      <div class="adversarial-text"><span class="concede">CONCEDED.</span> Every developer who writes CUDA code is writing switching costs into NVDA's balance sheet. AMD's ROCm has existed for nearly a decade and has not meaningfully dented CUDA's developer share. Google's TPUs are captive. Intel Gaudi is niche. The CUDA ecosystem is the most durable moat in semiconductors — possibly in technology. The GAS cannot construct a credible 3-year path to CUDA displacement. Concession stands.</div>
+    </div>
+
+    <div class="adversarial-item">
+      <div class="adversarial-point">Steel Man #2 — Hyperscaler Capex Is Structural, Not Cyclical</div>
+      <div class="adversarial-text"><span class="concede">CONCEDED.</span> Meta guided $60–65B capex for 2025 and recently raised it again. Microsoft, Google, and Amazon are in a structurally similar posture. None of them can afford to slow AI infrastructure build while competitors accelerate. This is not the dot-com cycle where the capex was speculative — these companies have real AI revenue covering the spend. The GAS finds no credible catalyst to reverse hyperscaler capex in the 2026–2028 window. Concession stands.</div>
+    </div>
+
+    <div class="adversarial-item">
+      <div class="adversarial-point">Steel Man #3 — Supply Constraints Mean Demand Is Unmet, Not Saturated</div>
+      <div class="adversarial-text"><span class="concede">CONCEDED.</span> When customers are screaming for more chips than you can ship, the demand signal is unambiguous. Every Blackwell GPU produced is spoken for before it ships. VL's July-quarter narrative explicitly confirms supply constraints as the binding factor, not demand. The GAS cannot credibly argue demand saturation when order books are oversubscribed. Concession stands.</div>
+    </div>
+
+    <div class="adversarial-item">
+      <div class="adversarial-point">Steel Man #4 — $5.15T Market Cap Prices In Too Much Future</div>
+      <div class="adversarial-text"><span class="rebut">ENGAGED — THIS IS THE REAL BEAR CASE.</span> The GAS does not yield on valuation. At $5.15T, NVDA is priced larger than every major European economy's stock market. The FY2027E forward P/E of 13.6× sounds cheap — until you remember that assumes $15.75 EPS actually materializes. VL's 2029-31 low projection of $355 represents only 66% upside from $213 over 5 years — a 10.7% CAGR — barely meeting the hurdle. The base case IRR is real but the terminal P/E compression risk is significant. As NVDA approaches $1T in revenue, the law of large numbers applies. Partially rebutted but the valuation tail risk is not zero.</div>
+    </div>
+
+    <div class="adversarial-item">
+      <div class="adversarial-point">Steel Man #5 — ASICs / Custom Silicon Are a 3–5 Year Displacement Risk</div>
+      <div class="adversarial-text"><span class="rebut">ENGAGED — REAL BUT OVERSTATED.</span> Google TPU v5, Amazon Trainium 2, and Meta's MTIA are real. But custom ASICs optimize for inference at scale on known models — they are not general-purpose training accelerators. Every new model architecture requires re-training, and training still needs NVDA. Inference displacement is gradual, partial, and coexists with CUDA for the foreseeable future. The GAS concedes this bear thesis is directionally correct for the 2028–2032 window but does not change the 7-year IRR outcome materially given the early-period EPS trajectory. Rebuttal stands.</div>
+    </div>
+
+    <div class="adversarial-item">
+      <div class="adversarial-point">Rule AA-3 — Bear Case Weaknesses (Symmetry)</div>
+      <div class="adversarial-text">The bear case could fail if: (a) Blackwell supply catch-up takes longer than guided — every delayed quarter of supply shortage is a quarter of pent-up demand, not lost demand; (b) ASIC displacement moves slower than expected as model architectures continue to evolve; (c) Sovereign AI spending (Europe, Middle East, Japan) becomes a fourth demand pillar beyond hyperscalers; (d) Automotive DRIVE platform matures faster than modeled as Level 3/4 AV deployment accelerates. Any two of these make the bear case collapse.</div>
+    </div>
+
+    <div class="adversarial-item">
+      <div class="adversarial-point">Rule AA-4 — No Single-Segment Collapse Test</div>
+      <div class="adversarial-text">Bear case must hold even if data center is excluded? It does not — NVDA without data center is Gaming + Pro Viz + Auto (~10% of revenue) at a $5T valuation. But the inverse test is more relevant: even with complete ASIC displacement of inference workloads (the most aggressive bear scenario), training demand alone at the current rate covers the bear case IRR. Single-segment collapse (data center) would be catastrophic, but the bear case in the DSM model doesn't assert that — it asserts growth deceleration to 20% CAGR, not collapse. Test passed at the stated assumptions.</div>
+    </div>
+
+    <div class="adversarial-item">
+      <div class="adversarial-point">GAS Final Verdict</div>
+      <div class="adversarial-text">3 concessions on 5 Steel Man points triggers verdict review per Rule AA-2. Verdict reviewed: BUY / TRANCHE ON WEAKNESS confirmed and strengthened. This is the cleanest Back-Calc the DSM engine will likely ever process — the hurdle clears in the bear case. The Vertical Wall is real and must be respected for entry pacing (don't deploy the full IRA cash in one shot), but it is not a SELL signal on a position that passes all three gates. The market is telling you the future is already priced in at $243; today at $213 it's giving you a modest discount on the same thesis. Buy the dips. Don't buy the rips.</div>
+    </div>
+  </div>
+
+  <!-- Bull / Bear -->
+  <div class="section-header">Bull vs. Bear — Decision Matrix</div>
+  <div class="bb-grid">
+    <div class="bb-col">
+      <div class="bb-header bull">BULL CASE</div>
+      <ul class="bb-list">
+        <li><strong>CUDA monopoly with no viable challenger.</strong> AMD ROCm, Intel Gaudi, and custom ASICs have coexisted with CUDA for years without displacing it. Developer switching costs compound annually.</li>
+        <li><strong>Blackwell re-acceleration underway.</strong> VL July-quarter $2.22 EPS vs $2.10 estimate — already above the prior FY2025 full-year EPS. FY2026E $9.30 is a 95% YoY surge. Oct quarter guidance $108B obliterates consensus.</li>
+        <li><strong>Hyperscaler capex is structural.</strong> Meta, MSFT, Google, Amazon: all guiding higher. AI infrastructure spend is a multi-year commitment, not a quarter-by-quarter line item that can be cut.</li>
+        <li><strong>Net cash fortress at $99.4B.</strong> 5.45% LT Debt/Capital. AA S&amp;P rating. The balance sheet can absorb a demand air pocket without existential risk.</li>
+        <li><strong>Optionality: Automotive, Sovereign AI, Robotics.</strong> DRIVE platform, Omniverse, physical AI — none are in the current model. Each is a call option on top of the data center thesis.</li>
+        <li><strong>FY2027E at 13.6× forward P/E.</strong> If VL's $15.75 materializes, current price is cheap. The market rarely offers 35%+ EPS growth at 14× forward for long.</li>
+      </ul>
+    </div>
+    <div class="bb-col">
+      <div class="bb-header bear">BEAR CASE</div>
+      <ul class="bb-list">
+        <li><strong>$5.15T market cap has nowhere to hide.</strong> To grow at 35% from this base, NVDA needs to become a ~$20T company by 2033. The math requires the entire global AI infrastructure market to funnel through one company for a decade.</li>
+        <li><strong>Custom ASIC displacement for inference.</strong> Google TPU, Amazon Trainium, Meta MTIA — major customers are building around NVDA for inference workloads. As inference becomes the dominant AI compute spend (post-training), NVDA's TAM share faces structural pressure.</li>
+        <li><strong>TSMC concentration risk.</strong> 100% of wafer production at TSMC. Any supply disruption — Taiwan geopolitical risk, fab accident, TSMC capacity allocation — is a direct revenue risk with no backup source.</li>
+        <li><strong>Memory cost pressure on gross margins.</strong> VL explicitly notes HBM memory cost headwinds. Gross margins under pressure even as revenue grows. Blackwell ramp cost curve may be steeper than guided.</li>
+        <li><strong>Hyperscaler capex is volatile.</strong> Meta cut capex aggressively in 2022. Cycles happen. A single quarter of guidance reduction from one hyperscaler would crater NVDA on sentiment alone at this valuation.</li>
+        <li><strong>Beta 1.50 amplifies market drawdowns.</strong> In a broad market correction, NVDA falls harder than the index. A 20% market correction historically maps to 30%+ NVDA drawdown.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Strike Zone -->
+  <div class="section-header">Strike Zone — Tranche Deployment Framework</div>
+  <div class="strike-grid">
+    <div class="strike-card mos">
+      <div class="strike-zone-label">🟢 Strong Add / MOS</div>
+      <div class="strike-price">$165–$185</div>
+      <div class="strike-pe">FY2027E: ~10.5–11.7×</div>
+      <p class="note" style="margin-top:6px;font-size:10px">52-week low zone ($164). Maximum margin of safety. Broadest entry if market correction delivers it.</p>
+    </div>
+    <div class="strike-card add">
+      <div class="strike-zone-label">🟡 Constructive Add</div>
+      <div class="strike-price">$185–$210</div>
+      <div class="strike-pe">FY2027E: ~11.7–13.3×</div>
+      <p class="note" style="margin-top:6px;font-size:10px">Below current. Strong forward P/E. Core tranche deployment zone. Today's close ($203) is in this band.</p>
+    </div>
+    <div class="strike-card accum">
+      <div class="strike-zone-label">🟠 Accumulate (Current)</div>
+      <div class="strike-price">$210–$230</div>
+      <div class="strike-pe">FY2027E: ~13.3–14.6×</div>
+      <p class="note" style="margin-top:6px;font-size:10px">Current range. Reasonable tranche on weakness days. FG fair value $438 provides ample upside buffer.</p>
+    </div>
+    <div class="strike-card hold">
+      <div class="strike-zone-label">⚪ Hold — No New Add</div>
+      <div class="strike-price">$230–$260</div>
+      <div class="strike-pe">FY2027E: ~14.6–16.5×</div>
+      <p class="note" style="margin-top:6px;font-size:10px">Approaching 52-week high. Hold existing. Pause new tranches. Let the thesis confirm.</p>
+    </div>
+    <div class="strike-card trim">
+      <div class="strike-zone-label">🔴 Trim / Rebalance</div>
+      <div class="strike-price">$300+</div>
+      <div class="strike-pe">FY2027E: 19×+</div>
+      <p class="note" style="margin-top:6px;font-size:10px">Above VL 18-mo midpoint ($298). Consider trim if position exceeds target IRA weight. Not a SELL thesis — a rebalance trigger.</p>
+    </div>
+  </div>
+
+  <!-- Safety Score -->
+  <div class="section-header">Safety Score — Module 2</div>
+  <div style="display:grid;grid-template-columns:1fr auto;gap:20px;align-items:start">
+    <div class="safety-grid">
+      <div class="safety-row">
+        <span class="safety-label">Financial Strength (VL: A+)</span>
+        <div class="safety-bar-bg"><div class="safety-bar-fill" style="width:100%"></div></div>
+        <span class="safety-score-val">+2.0</span>
+      </div>
+      <div class="safety-row">
+        <span class="safety-label">EPS Predictability (50/100)</span>
+        <div class="safety-bar-bg"><div class="safety-bar-fill warn" style="width:50%"></div></div>
+        <span class="safety-score-val">0.0</span>
+      </div>
+      <div class="safety-row">
+        <span class="safety-label">Price Stability (20/100 — Very Low)</span>
+        <div class="safety-bar-bg"><div class="safety-bar-fill red" style="width:20%"></div></div>
+        <span class="safety-score-val">-1.0</span>
+      </div>
+      <div class="safety-row">
+        <span class="safety-label">Price Growth Persistence (100/100)</span>
+        <div class="safety-bar-bg"><div class="safety-bar-fill" style="width:100%"></div></div>
+        <span class="safety-score-val">+1.0</span>
+      </div>
+      <div class="safety-row">
+        <span class="safety-label">VL Safety Rating (3 — Average)</span>
+        <div class="safety-bar-bg"><div class="safety-bar-fill warn" style="width:60%"></div></div>
+        <span class="safety-score-val">0.0</span>
+      </div>
+      <div class="safety-row">
+        <span class="safety-label">Beta (1.50 — High Volatility)</span>
+        <div class="safety-bar-bg"><div class="safety-bar-fill red" style="width:35%"></div></div>
+        <span class="safety-score-val">-1.0</span>
+      </div>
+      <div class="safety-row">
+        <span class="safety-label">LT Debt/Capital (5.45% — Fortress)</span>
+        <div class="safety-bar-bg"><div class="safety-bar-fill" style="width:100%"></div></div>
+        <span class="safety-score-val">+1.0</span>
+      </div>
+      <div class="safety-row">
+        <span class="safety-label">Dividend Consistency (minimal history)</span>
+        <div class="safety-bar-bg"><div class="safety-bar-fill warn" style="width:25%"></div></div>
+        <span class="safety-score-val">0.0</span>
+      </div>
+    </div>
+    <div>
+      <div class="safety-total">
+        <span class="safety-total-num">7.0</span>
+        <span class="safety-total-denom">/10</span>
+      </div>
+      <p class="note" style="font-size:10px;margin-top:4px">✓ Clears 6.0 floor<br>No Structural Rot<br>Volatility is the tax<br>paid for the return</p>
+    </div>
+  </div>
+  <p class="note">Price Stability 20/100 and Beta 1.50 are not defects — they are features of a hyper-growth compounder. NVDA traded from $164 to $243 and back to $203 in a single year. The Safety Score reflects that volatility appropriately. The 7.0 score is right: this clears the floor but it is not ABBV (7.5) or a defensive income name. It is a growth vehicle with a fortress balance sheet and a high-beta ride.</p>
+
+  <!-- VL Ratings -->
+  <div class="section-header">Value Line Ratings — Sept 18, 2026</div>
+  <div class="vl-grid">
+    <div class="vl-cell">
+      <div class="vl-metric">Timeliness</div>
+      <div class="vl-val green">2 — Above Avg</div>
+      <div class="vl-note">Raised 5/1/26. Strong near-term momentum signal from VL.</div>
+    </div>
+    <div class="vl-cell">
+      <div class="vl-metric">Safety</div>
+      <div class="vl-val warn">3 — Average</div>
+      <div class="vl-note">Raised 12/22/23. Reflects high beta and price volatility vs. safety of earnings stream.</div>
+    </div>
+    <div class="vl-cell">
+      <div class="vl-metric">Technical</div>
+      <div class="vl-val warn">3 — Average</div>
+      <div class="vl-note">Lowered 8/21/26 — price pulled back from highs. Not a fundamental concern.</div>
+    </div>
+    <div class="vl-cell">
+      <div class="vl-metric">Financial Strength</div>
+      <div class="vl-val green">A+</div>
+      <div class="vl-note">Maximum VL tier. $99.4B cash, 5.45% LT Debt/Capital, AA S&P.</div>
+    </div>
+    <div class="vl-cell">
+      <div class="vl-metric">EPS Predictability</div>
+      <div class="vl-val warn">50/100</div>
+      <div class="vl-note">Moderate. Reflects cyclical semiconductor volatility pre-AI era and high growth uncertainty.</div>
+    </div>
+    <div class="vl-cell">
+      <div class="vl-metric">Price Stability</div>
+      <div class="vl-val red">20/100</div>
+      <div class="vl-note">Very low. High-beta name. Expect 30–40% drawdowns in broad corrections.</div>
+    </div>
+    <div class="vl-cell">
+      <div class="vl-metric">Price Growth Persistence</div>
+      <div class="vl-val green">100/100</div>
+      <div class="vl-note">Perfect score. Sustained price appreciation track record across all measured periods.</div>
+    </div>
+    <div class="vl-cell">
+      <div class="vl-metric">2029–31 Target</div>
+      <div class="vl-val green">$355–$535</div>
+      <div class="vl-note">High $535 (+150%), Low $355 (+66%). Ann'l return: 24% high / 12% low.</div>
+    </div>
+    <div class="vl-cell">
+      <div class="vl-metric">EPS Growth to '29–31</div>
+      <div class="vl-val green">35.5%/yr</div>
+      <div class="vl-note">VL long-term projection. 10-yr historical 62%, 5-yr 82%. Deceleration modeled.</div>
+    </div>
+  </div>
+
+  <!-- Unified Verdict -->
+  <div class="section-header">Unified Verdict</div>
+  <div class="card" style="border-left:3px solid var(--green);padding:18px 20px;">
+    <div style="font-family:var(--mono);font-size:14px;font-weight:500;color:var(--green);margin-bottom:10px;">
+      BUY / TRANCHE ON WEAKNESS — SPECULATIVE-CORE · IRA Growth Sleeve
+    </div>
+    <p style="font-size:13px;color:var(--fg-muted);line-height:1.7;margin-bottom:12px;">
+      <strong style="color:var(--fg);">ENGINE:</strong> The cleanest Back-Calc in the DSM engine — 35% IRR base, 17% IRR bear. Every scenario clears the 10% hurdle with room to spare. Financial Strength A+, $99.4B net cash, 90% data center exposure, CUDA monopoly, and a hyperscaler capex cycle that is structural rather than cyclical. This is not a borderline LEADERSHIP candidate — it is the textbook case for what the DSM engine is built to identify.
+    </p>
+    <p style="font-size:13px;color:var(--fg-muted);line-height:1.7;margin-bottom:12px;">
+      <strong style="color:var(--fg);">FRICTION:</strong> $5.15T market cap is the law-of-large-numbers wall. Beta 1.50 means volatility is the cost of admission. Custom ASIC displacement of inference workloads is a real 3–5 year structural risk. TSMC concentration is geopolitical tail risk. Price Stability 20/100 — expect gut-wrenching drawdowns that feel like thesis failures but aren't. Today's 4% down day on Intel/PC read-across is a textbook example of the noise vs. signal problem at $5T market cap.
+    </p>
+    <p style="font-size:13px;color:var(--fg-muted);line-height:1.7;margin-bottom:16px;">
+      <strong style="color:var(--fg);">EXIT:</strong> No exit trigger present. Tranche deployment framework: $185–$210 is the core add zone; $210–$230 (current) supports continued accumulation on red days. Pause above $230 until thesis confirmation from Nov 17 earnings. Rebalance consideration above $300 if position exceeds IRA target weight. The only valid SELL signal is a fundamental break in the AI infrastructure capex cycle — not a down day, not a sector rotation, not a beta-amplified market correction.
+    </p>
+    <div style="background:var(--bg-code);border-radius:4px;padding:14px;font-size:12px;color:var(--fg-muted);line-height:1.7;border-left:2px solid var(--accent);">
+      NVDA is not a stock you analyze with a P/E ratio — it's a stock you analyze with a map of the next decade of compute infrastructure. Right now, that map has one city on it. The debate isn't whether AI needs GPUs; it's whether a single company can maintain this extraction rate as the market matures. At $213 with a 13.6× forward multiple and a bear-case IRR of 17%, the market is already pricing in significant deceleration. That's the entry: not cheap, not expensive, and the future is genuinely uncertain enough that the stock won't go straight up — which is exactly when you tranche in.
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <strong>DSM Engine V4.2.4</strong> · Hybrid Portfolio Architect · NVDA Analysis · October 30, 2026<br>
+    Price: $213.66 (Oct 29, 2026; today's session ~$203) · VL Report: September 18, 2026 · FG Data: October 29, 2026<br>
+    FY2026 = fiscal year ending January 2027. EPS figures use adjusted (operating) basis per VL and FG convention. FG Est. Annual ROR (111.85%) disqualified per DSM protocol — Normal P/E 48.69× is speculative at current EPS trajectory; Back-Calc governs. IRR scenarios are forward projections based on VL analyst consensus and FG estimates; actual returns will differ. TSMC geopolitical risk and custom ASIC displacement are qualitative risks not modeled in terminal value.<br><br>
+    <strong>Not investment advice.</strong> For informational and analytical purposes only. All investment decisions carry risk. Past performance does not guarantee future results.
+  </div>
+
+</div>
+
+</body></html>
